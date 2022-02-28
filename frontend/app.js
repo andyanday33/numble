@@ -15,7 +15,7 @@ const app = Vue.createApp({
                 'gameMode' : document.querySelector('#gameDifficultySelect').value
             }
             console.log(data.gameMode);
-            fetch('127.0.0.1:8080/game', method = {
+            fetch('https://127.0.0.1:8080/game', method = {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
