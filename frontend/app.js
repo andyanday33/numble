@@ -7,6 +7,7 @@ const app = Vue.createApp({
             author: 'Brandon Sanderson',
             age: 45,
             gameStarted: false,
+            hardMode: false,
         }
     },
     methods: {
@@ -15,6 +16,12 @@ const app = Vue.createApp({
                 'gameMode' : document.querySelector('#gameDifficultySelect').value
             }
             console.log(data.gameMode);
+            if (data.gameMode == "Hard"){
+                this.hardMode = true;
+            } else {
+                this.hardMode = false;
+            }
+            //this.gameStarted = true;
             fetch('https://127.0.0.1:8080/game', method = {
                 method: 'POST',
                 headers: {
@@ -25,16 +32,16 @@ const app = Vue.createApp({
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            this.checkGameId();
+            //this.checkGameId();
         })
-        .catch(err => console.log("Error! " + err));
+        .catch(err => {console.log("Error! " + err); this.gameStarted = true;});
         },
         checkGameId() {
             let cookie = document.cookie;
             if(!cookie.gameId){
-                gameStarted = true;
+                this.gameStarted = true;
             } else {
-                gameStarted = false;
+                this.gameStarted = false;
             }
         }
     }

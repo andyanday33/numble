@@ -23,6 +23,7 @@
     </header>
     <main class="container" id="app"> 
         
+        <!--Render before starting the game-->
         <div class="row top-buffer" v-if="!gameStarted">
             <form>
                 <select class="form-select" id="gameDifficultySelect">
@@ -34,9 +35,22 @@
         <div class="row top-buffer" v-if="!gameStarted">
             <button type="start-button" class="btn btn-success" @click="startGame">New Game</button>
         </div>
-        <div class="row top-buffer" v-if="gameStarted">
-            <h2>Game Started!</h2>
-        </div>
+        <section tag="game"  v-if="gameStarted">
+            <!--Render if there is an active game-->
+            <div class="row top-buffer">
+                <h2>Game Started!</h2>
+            </div>
+
+            <!--Render if the game is in easy mode-->
+            <div class="row top-buffer" v-if="!hardMode">
+                <h3>Easy Mode</h3>
+            </div>
+
+            <!--Render if the game is in hard mode-->
+            <div class="row top-buffer" v-if="hardMode">
+                <h3>Hard Mode</h3>
+            </div>
+        </section>
     </main>
     <script src="app.js"></script>
 </body>
