@@ -23,7 +23,10 @@ const app = Vue.createApp({
                 body: JSON.stringify(data)
             })
         .then(response => response.json())
-        .then(data => console.log(data))
+        .then(data => {
+            console.log(data);
+            this.checkGameId();
+        })
         .catch(err => console.log("Error! " + err));
         },
         checkGameId() {

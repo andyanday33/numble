@@ -34,6 +34,9 @@
         <div class="row top-buffer" v-if="!gameStarted">
             <button type="start-button" class="btn btn-success" @click="startGame">New Game</button>
         </div>
+        <div class="row top-buffer" v-if="gameStarted">
+            <h2>Game Started!</h2>
+        </div>
     </main>
     <script src="app.js"></script>
 </body>
