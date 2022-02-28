@@ -35,15 +35,45 @@
         <div class="row top-buffer" v-if="!gameStarted">
             <button type="start-button" class="btn btn-success" @click="startGame">New Game</button>
         </div>
+
+        <!--Render if there is an active game-->
         <section tag="game"  v-if="gameStarted">
-            <!--Render if there is an active game-->
+            
             <div class="row top-buffer">
                 <h2>Game Started!</h2>
             </div>
 
             <!--Render if the game is in easy mode-->
-            <div class="row top-buffer" v-if="!hardMode">
-                <h3>Easy Mode</h3>
+            <div tag="input-section" class="row top-buffer" v-if="!hardMode">
+                <div class="input-group row top-buffer justify-content-center">
+                    <input autofocus :disabled="usedRows != 0" data-index="0" ref="input-0" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="1" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 0" data-index="1" ref="input-1" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="2" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 0" data-index="2" ref="input-2" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="3" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 0" data-index="3" ref="input-3" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="4" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 0" data-index="4" ref="input-4" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="5" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 0" data-index="5" ref="input-5" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="6" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                </div>
+                <div class="input-group row top-buffer justify-content-center">
+                    <input :disabled="usedRows != 1" autofocus data-index="6" ref="input-6" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="1" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 1" data-index="7" ref="input-7" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="2" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 1" data-index="8" ref="input-8" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="3" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 1" data-index="9" ref="input-9" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="4" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 1" data-index="10" ref="input-10" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="5" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 1"data-index="11" ref="input-11" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" tabindex="6" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                </div>
+               
             </div>
 
             <!--Render if the game is in hard mode-->
