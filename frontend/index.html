@@ -47,31 +47,59 @@
             <div tag="input-section" class="row top-buffer" v-if="!hardMode">
                 <div class="input-group row top-buffer justify-content-center">
                     <input autofocus :disabled="usedRows != 0" data-index="0" ref="input-0" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="1" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0" data-index="1" ref="input-1" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="2" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0" data-index="2" ref="input-2" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="3" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0" data-index="3" ref="input-3" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="4" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0" data-index="4" ref="input-4" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="5" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0" data-index="5" ref="input-5" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="6" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
                 </div>
                 <div class="input-group row top-buffer justify-content-center">
-                    <input :disabled="usedRows != 1" autofocus data-index="6" ref="input-6" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="1" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 1" data-index="6" ref="input-6" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1" data-index="7" ref="input-7" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="2" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1" data-index="8" ref="input-8" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="3" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1" data-index="9" ref="input-9" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="4" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1" data-index="10" ref="input-10" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="5" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1"data-index="11" ref="input-11" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
-                    class="form-control col border-solid border-2 text-center" tabindex="6" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
+                </div>
+                <div class="input-group row top-buffer justify-content-center" >
+                    <input :disabled="usedRows != 2" data-index="12" ref="input-12" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 2" data-index="13" ref="input-13" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 2" data-index="14" ref="input-14" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 2" data-index="15" ref="input-15" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 2" data-index="16" ref="input-16" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 2"data-index="17" ref="input-17" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
+                </div>
+                <div class="input-group row top-buffer justify-content-center">
+                    <input :disabled="usedRows != 3" data-index="18" ref="input-18" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 3" data-index="19" ref="input-19" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 3" data-index="20" ref="input-20" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 3" data-index="21" ref="input-21" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 3" data-index="22" ref="input-22" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
+                    <input :disabled="usedRows != 3"data-index="23" ref="input-23" type="text" maxlength="1" pattern="[0-9]|\+|\-" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
                 </div>
                
             </div>
