@@ -23,7 +23,7 @@
     </header>
     <main class="container" id="app"> 
         
-        <div class="row top-buffer">
+        <div class="row top-buffer" v-if="!gameStarted">
             <form>
                 <select class="form-select" id="gameDifficultySelect">
                   <option selected value="Easy">Easy Mode</option>
@@ -31,7 +31,7 @@
                 </select>
             </form>
         </div>
-        <div class="row top-buffer">
+        <div class="row top-buffer" v-if="!gameStarted">
             <button type="start-button" class="btn btn-success" @click="startGame">New Game</button>
         </div>
     </main>

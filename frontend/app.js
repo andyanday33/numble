@@ -5,7 +5,8 @@ const app = Vue.createApp({
         return {
             title: 'The Final Empire',
             author: 'Brandon Sanderson',
-            age: 45
+            age: 45,
+            gameStarted: false,
         }
     },
     methods: {
@@ -24,6 +25,14 @@ const app = Vue.createApp({
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(err => console.log("Error! " + err));
+        },
+        checkGameId() {
+            let cookie = document.cookie;
+            if(!cookie.gameId){
+                gameStarted = true;
+            } else {
+                gameStarted = false;
+            }
         }
     }
 });
