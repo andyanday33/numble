@@ -8,6 +8,7 @@ const app = Vue.createApp({
             age: 45,
             gameStarted: false,
             hardMode: false,
+            usedRows: 0,
         }
     },
     methods: {
@@ -38,10 +39,31 @@ const app = Vue.createApp({
         },
         checkGameId() {
             let cookie = document.cookie;
-            if(!cookie.gameId){
+            if (!cookie.gameId) {
                 this.gameStarted = true;
             } else {
                 this.gameStarted = false;
+            }
+        },
+        focusNextOnMax(event, max) {
+            if (event.target.value.length === max) {
+                console.log("max");
+                const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
+                if (nextElement) nextElement.focus();
+            }
+        },
+        focusPrevOnMin(event, min) {
+            if (event.target.value.length === min) {
+                const prevElement = this.$refs?.[`input-${Number(event.target.dataset.index) - 1}`];
+                if (prevElement) prevElement.focus();
+            }
+        },
+        checkEquation(event) {
+            //TODO: implement this logic
+            if (event.key == "Enter") {
+                this.usedRows++;
+                const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
+                if (nextElement) nextElement.focus();
             }
         }
     }
