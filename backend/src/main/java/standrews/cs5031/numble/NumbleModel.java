@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 
 public interface NumbleModel {
 
+    enum Mode {EASY, HARD}
+
     /**
      * The first time this is called, the game starts and
      * a right solution is formed.
      * After each guess, the winning condition is checked.
      * @param guess
      * @throws IllegalArgumentException if the guess is not a valid equation
-     * @return true if this is wrong guess and the player loses, false otherwise
+     * @return true if this is right guess and the player wins, false otherwise
      */
     boolean guess(String guess);
 
@@ -55,4 +57,6 @@ public interface NumbleModel {
     int getNumberOfGuessMade();
 
     Cell[][] getCells();
+
+    Mode getMode();
 }
