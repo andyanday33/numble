@@ -6,7 +6,7 @@ import standrews.cs5031.numble.NumbleModel;
 /**
  * Model implementation for the simple Numble game.
  */
-public class NumbleModelImpl implements NumbleModel {
+public class NumbleModelEasyModeImpl implements NumbleModel {
     private final int numCols;
     private final int numRows;
 
@@ -25,7 +25,7 @@ public class NumbleModelImpl implements NumbleModel {
     private boolean won = false;
     private boolean lost = false;
 
-    public NumbleModelImpl(int numRows, int numCols, int rhs, String lhs) {
+    public NumbleModelEasyModeImpl(int numRows, int numCols, int rhs, String lhs) {
         this.numCols = numCols;
         this.numRows = numRows;
         this.rhs = rhs;
@@ -84,4 +84,14 @@ public class NumbleModelImpl implements NumbleModel {
     public Cell[][] getCells() {
         return cells;
     }
+
+    @Override
+    public Mode getMode() {
+        return Mode.EASY;
+    }
+
+    public int getRhs() {
+        return rhs;
+    }
+
 }
