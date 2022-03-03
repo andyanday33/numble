@@ -18,7 +18,7 @@ public class NumbleAPI {
     private final Map<Integer, NumbleModel> games = new HashMap<>();
     
     @PostMapping("/game")
-    public Integer startGame(@RequestParam("mode") NumbleModel.Mode mode) {
+    public Integer startGame(@RequestParam(value = "mode", defaultValue = "EASY") NumbleModel.Mode mode) {
         NumbleModel model = null;
         if (mode == NumbleModel.Mode.EASY) {
             //randomly select an equation from data source
