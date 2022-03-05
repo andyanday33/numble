@@ -9,6 +9,7 @@ const app = Vue.createApp({
             gameStarted: false,
             hardMode: false,
             usedRows: 0,
+            equationAnswer: null,
         }
     },
     methods: {
@@ -47,7 +48,6 @@ const app = Vue.createApp({
         },
         focusNextOnMax(event, max) {
             if (event.target.value.length === max) {
-                console.log("max");
                 const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
                 if (nextElement) nextElement.focus();
             }
@@ -62,11 +62,10 @@ const app = Vue.createApp({
             //TODO: implement this logic
             if (event.key == "Enter") {
                 this.usedRows++;
-                const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
-                if (nextElement) nextElement.focus();
+                
             }
         }
     }
 });
 
-app.mount('#app')
+app.mount('#app');
