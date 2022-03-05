@@ -46,8 +46,8 @@ public class EquationData {
             equations = HARD_MODE_EQUATIONS.get(length);
         }
         if (equations != null) {
-            Random random = new Random(equations.length);
-            return equations[random.nextInt()];
+            Random random = new Random();
+            return equations[random.nextInt(equations.length)];
         } else {
             throw new IllegalArgumentException("No equation with length " + length + " in " + mode + " mode");
         }

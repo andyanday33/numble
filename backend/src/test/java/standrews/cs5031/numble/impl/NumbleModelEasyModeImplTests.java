@@ -14,10 +14,10 @@ public class NumbleModelEasyModeImplTests {
 
     @BeforeEach
     public void setup() {
-        model = new NumbleModelEasyModeImpl(2, 3);
         MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 3))
                 .thenReturn("3+2=5");
+        model = new NumbleModelEasyModeImpl(2, 3);
     }
 
     @Test
