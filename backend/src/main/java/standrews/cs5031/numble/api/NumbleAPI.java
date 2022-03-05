@@ -18,15 +18,15 @@ public class NumbleAPI {
     private final Map<Integer, NumbleModel> games = new HashMap<>();
     
     @PostMapping("/game")
-    public Integer startGame(@RequestBody String mode) {
+    public Integer startGame(@RequestBody NumbleModel.Mode mode) {
         NumbleModel model = null;
-        if (mode.equals(NumbleModel.Mode.EASY)) {
+        if (mode == NumbleModel.Mode.EASY) {
             //randomly select an equation from data source
             //parse this equation to get rhs and lhs
             int rhs = 6;
             String lhs = "1+2+3";
             model = new NumbleModelEasyModeImpl(Config.EASY_MODE_NUM_OF_ROWS, Config.EASY_MODE_NUM_OF_COLS, rhs, lhs);
-        } else if(mode.equals(NumbleModel.Mode.HARD)) {
+        } else if(mode == NumbleModel.Mode.HARD) {
 
             //TODO create a hard mode game instance
         } else{
