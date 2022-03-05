@@ -10,6 +10,8 @@ const app = Vue.createApp({
             hardMode: false,
             usedRows: 0,
             equationAnswer: null,
+            gameId: null,
+            rightHandSide: null,
         }
     },
     methods: {
@@ -24,7 +26,7 @@ const app = Vue.createApp({
                 this.hardMode = false;
             }
             //this.gameStarted = true;
-            fetch('http://127.0.0.1:8080/game', method = {
+            await fetch('http://127.0.0.1:8080/game', method = {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
@@ -35,8 +37,22 @@ const app = Vue.createApp({
         .then(data => {
             console.log(data);
             //this.checkGameId();
+            this.gameStarted = true;
+            this.gameId = data;
         })
-        .catch(err => {console.log("Error! " + err); this.gameStarted = true;});
+        .catch(err => {console.error("Error! " + err);});
+            fetch(`http://127.0.0.1:8080/game/${this.gameId}/rhs`, method = {
+                method: "GET",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+            })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            this.rightHandSide = data;
+        })
+        .catch(err => console.error("Error! " + err))
         },
         checkGameId() {
             let cookie = document.cookie;
