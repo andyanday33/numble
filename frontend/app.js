@@ -9,6 +9,9 @@ const app = Vue.createApp({
             gameStarted: false,
             hardMode: false,
             usedRows: 0,
+            equationAnswer: null,
+            gameId: null,
+            rightHandSide: null,
         }
     },
     methods: {
@@ -23,7 +26,7 @@ const app = Vue.createApp({
                 this.hardMode = false;
             }
             //this.gameStarted = true;
-            fetch('http://127.0.0.1:8080/game', method = {
+            await fetch('http://127.0.0.1:8080/game', method = {
                 method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
@@ -34,8 +37,22 @@ const app = Vue.createApp({
         .then(data => {
             console.log(data);
             //this.checkGameId();
+            this.gameStarted = true;
+            this.gameId = data;
         })
-        .catch(err => {console.log("Error! " + err); this.gameStarted = true;});
+        .catch(err => {console.error("Error! " + err);});
+            fetch(`http://127.0.0.1:8080/game/${this.gameId}/rhs`, method = {
+                method: "GET",
+                headers: {
+                    'Content-Type' : 'application/json'
+                },
+            })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            this.rightHandSide = data;
+        })
+        .catch(err => console.error("Error! " + err))
         },
         checkGameId() {
             let cookie = document.cookie;
@@ -47,7 +64,6 @@ const app = Vue.createApp({
         },
         focusNextOnMax(event, max) {
             if (event.target.value.length === max) {
-                console.log("max");
                 const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
                 if (nextElement) nextElement.focus();
             }
@@ -62,11 +78,10 @@ const app = Vue.createApp({
             //TODO: implement this logic
             if (event.key == "Enter") {
                 this.usedRows++;
-                const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
-                if (nextElement) nextElement.focus();
+                
             }
         }
     }
 });
 
-app.mount('#app')
+app.mount('#app');
