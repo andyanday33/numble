@@ -90,14 +90,11 @@ const app = Vue.createApp({
                         if(num.test(element.value)) {
                             if (currentNumber == null){
                                 currentNumber =  element.value;
-                                console.log(currentNumber);
                             } else {
                                 currentNumber += String(element.value);
-                                console.log(currentNumber);
                             }
                         //if input is an operation such as + or -
                         } else if(op.test(element.value)) {
-                            console.log("OPERATION")
                             if(operation == "addition"){
                                 answer += Number(currentNumber);
                             } else if(operation == "extraction") {
@@ -114,7 +111,6 @@ const app = Vue.createApp({
                         }
                        
                     }
-                    console.log("answer given: " + answer);
                     console.log("answer string: " + equationString);
                     
                     if(answer == this.rightHandSide){
