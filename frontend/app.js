@@ -26,7 +26,7 @@ const app = Vue.createApp({
                 headers: {
                     'Content-Type' : 'application/json'
                 },
-                body: JSON.stringify(gameMode)
+                body: JSON.stringify(gameMode.toUpperCase())
             })
         .then(response => response.json())
         .then(data => {
