@@ -13,11 +13,9 @@ const app = Vue.createApp({
     },
     methods: {
         async startGame() {
-            data = {
-                'gameMode' : document.querySelector('#gameDifficultySelect').value
-            }
-            console.log(data.gameMode);
-            if (data.gameMode == "Hard"){
+            gameMode = document.querySelector('#gameDifficultySelect').value;
+            console.log(gameMode);
+            if (gameMode == "Hard"){
                 this.hardMode = true;
             } else {
                 this.hardMode = false;
@@ -28,7 +26,7 @@ const app = Vue.createApp({
                 headers: {
                     'Content-Type' : 'application/json'
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(gameMode)
             })
         .then(response => response.json())
         .then(data => {
