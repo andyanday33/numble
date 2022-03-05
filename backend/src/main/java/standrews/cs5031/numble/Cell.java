@@ -7,7 +7,7 @@ public class Cell {
     /**
      * Possible states that a cell can have.
      */
-    enum State {INIT, CORRECT, WRONG_POSITION, NOT_EXIST}
+    public enum State {INIT, CORRECT, WRONG_POSITION, NOT_EXIST}
 
     public final int col;
     public final int row;

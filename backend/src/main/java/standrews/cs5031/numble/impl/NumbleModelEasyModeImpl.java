@@ -2,6 +2,7 @@ package standrews.cs5031.numble.impl;
 
 import standrews.cs5031.numble.Cell;
 import standrews.cs5031.numble.NumbleModel;
+import standrews.cs5031.numble.data.EquationData;
 
 /**
  * Model implementation for the simple Numble game.
@@ -25,12 +26,9 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     private boolean won = false;
     private boolean lost = false;
 
-    public NumbleModelEasyModeImpl(int numRows, int numCols, int rhs, String lhs) {
+    public NumbleModelEasyModeImpl(int numRows, int numCols) {
         this.numCols = numCols;
         this.numRows = numRows;
-        this.rhs = rhs;
-        this.lhs = lhs;
-
         numberOfGuessMade = 0;
         cells = new Cell[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
@@ -38,7 +36,14 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
                 cells[row][col] = new Cell(row, col);
             }
         }
+        //Get a random equation from data source.
+        String equation = EquationData.getRandomEquation(Mode.EASY, numCols);
+        //Initialise rhs and lhs based on the equation
+        int equalMarkIndex = equation.indexOf('=');
+        lhs = equation.substring(0, equalMarkIndex);
+        rhs = Integer.parseInt(equation.substring(equalMarkIndex + 1));
     }
+
 
     @Override
     public boolean guess(String guess) {

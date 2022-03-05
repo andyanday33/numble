@@ -41,7 +41,7 @@ public class EquationData {
         String[] equations = null;
         if (mode == NumbleModel.Mode.EASY) {
             equations = EASY_MODE_EQUATIONS.get(length);
-        } else {
+        } else if (mode == NumbleModel.Mode.HARD){
             //hard mode
             equations = HARD_MODE_EQUATIONS.get(length);
         }
