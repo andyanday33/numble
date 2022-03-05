@@ -38,11 +38,7 @@
 
         <!--Render if there is an active game-->
         <section tag="game"  v-if="gameStarted">
-            
-            <div class="row top-buffer">
-                <h2>Game Started!</h2>
-            </div>
-
+    
             <!--Render if the game is in easy mode-->
             <div tag="input-section" class="row top-buffer" v-if="!hardMode">
                 <div class="input-group row top-buffer justify-content-center">
