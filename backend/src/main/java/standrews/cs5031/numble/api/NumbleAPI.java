@@ -18,16 +18,20 @@ public class NumbleAPI {
     private final Map<Integer, NumbleModel> games = new HashMap<>();
     
     @PostMapping("/game")
-    public Integer startGame(@RequestParam(value = "mode", defaultValue = "EASY") NumbleModel.Mode mode) {
+    public Integer startGame(
+            @RequestParam(name = "mode", defaultValue = "EASY") String mode) {
         NumbleModel model = null;
-        if (mode == NumbleModel.Mode.EASY) {
+        if (mode.equals("EASY")) {
             //randomly select an equation from data source
             //parse this equation to get rhs and lhs
             int rhs = 6;
             String lhs = "1+2+3";
             model = new NumbleModelEasyModeImpl(Config.EASY_MODE_NUM_OF_ROWS, Config.EASY_MODE_NUM_OF_COLS, rhs, lhs);
-        } else {
+        } else if(mode.equals("HARD")) {
+
             //TODO create a hard mode game instance
+        } else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game mode doesnt exist");
         }
         games.put(++gameId, model);
         return gameId;
