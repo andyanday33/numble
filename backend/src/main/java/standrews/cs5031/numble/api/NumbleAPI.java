@@ -18,16 +18,15 @@ public class NumbleAPI {
     private final Map<Integer, NumbleModel> games = new HashMap<>();
     
     @PostMapping("/game")
-    public Integer startGame(
-            @RequestParam(name = "mode", defaultValue = "EASY") String mode) {
+    public Integer startGame(@RequestBody String mode) {
         NumbleModel model = null;
-        if (mode.equals("EASY")) {
+        if (mode.equals(NumbleModel.Mode.EASY)) {
             //randomly select an equation from data source
             //parse this equation to get rhs and lhs
             int rhs = 6;
             String lhs = "1+2+3";
             model = new NumbleModelEasyModeImpl(Config.EASY_MODE_NUM_OF_ROWS, Config.EASY_MODE_NUM_OF_COLS, rhs, lhs);
-        } else if(mode.equals("HARD")) {
+        } else if(mode.equals(NumbleModel.Mode.HARD)) {
 
             //TODO create a hard mode game instance
         } else{
@@ -59,7 +58,7 @@ public class NumbleAPI {
     }
 
     @PostMapping("/game/{id}/guess")
-    public NumbleModel makeGuess(@PathVariable int id, @RequestParam(name = "guess") String guess) {
+    public NumbleModel makeGuess(@PathVariable int id, @RequestBody String guess) {
         NumbleModel model = games.get(id);
         if (model != null) {
             try {
