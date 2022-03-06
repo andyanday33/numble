@@ -14,9 +14,10 @@ public interface NumbleModel {
      * After each guess, the winning condition is checked.
      * @param guess
      * @throws IllegalArgumentException if the guess is not a valid equation
+     * @throws MethodNotAvailableException if the game is over - player wins or loses.
      * @return true if this is right guess and the player wins, false otherwise
      */
-    boolean guess(String guess) throws ScriptException;
+    boolean guess(String guess);
 
     /**
      * Checks if the player has lost by wrongly guessing equation with last chance.
