@@ -11,9 +11,7 @@ import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
-
 import static org.junit.jupiter.api.Assertions.*;
-
 
 
 public class NumbleModelEasyModeImplTests {
@@ -29,7 +27,7 @@ public class NumbleModelEasyModeImplTests {
 
     @BeforeEach
     public void eachSetup() {
-        model = new NumbleModelEasyModeImpl(2, 3);
+        model = new NumbleModelEasyModeImpl(10, 3);
     }
 
     @AfterAll
@@ -44,7 +42,7 @@ public class NumbleModelEasyModeImplTests {
     public void gameCreated() {
 
         assertEquals(NumbleModel.Mode.EASY, model.getMode());
-        assertEquals(2, model.getNumRows());
+        assertEquals(10, model.getNumRows());
         assertEquals(3, model.getNumCols());
         for (int i = 0; i < model.getNumRows(); i++) {
             for (int j = 0; j < model.getNumCols(); j++) {
@@ -71,9 +69,9 @@ public class NumbleModelEasyModeImplTests {
 
     @Test
     public void noGuessAfterPlayerLoses(){
-
+        model = new NumbleModelEasyModeImpl(2, 3);
         //Lose the game
-        String wrongSolution = "3+1";
+        String wrongSolution = "4+1";
         assertFalse(model.guess(wrongSolution));
         assertFalse(model.guess(wrongSolution));
         assertTrue(model.hasLost());
