@@ -12,9 +12,8 @@ public class NumbleModelImplTests {
 
         NumbleModel game = new NumbleModelEasyModeImpl(5,5);
 
-        assertEquals(5, game.getNumRows());
-        assertEquals(5, game.getNumCols());
-
+        assertEquals(game.getNumRows(), 5);
+        assertEquals(game.getNumCols(),5);
 
     }
 }

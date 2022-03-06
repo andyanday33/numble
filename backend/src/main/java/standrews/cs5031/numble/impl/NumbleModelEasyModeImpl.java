@@ -60,7 +60,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     public boolean evaluate(String guess,int rhs) throws ScriptException {
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("js");
-        Object result = engine.eval("4*5-10");
+        Object result = engine.eval(guess);
         String res = String.valueOf(result);
         int fin = Integer.parseInt(res);
         return fin==rhs;

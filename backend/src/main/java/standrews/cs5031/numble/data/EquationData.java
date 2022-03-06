@@ -13,6 +13,7 @@ import java.util.Random;
 public class EquationData {
     private static final String[] EASY_MODE_LENGTH_THREE = {"1+2=3", "3*4=12", "8-2=6", "7*5=35", "3*3=9"};
     private static final String[] EASY_MODE_LENGTH_FOUR = {"10+2=12", "31*0=0", "81-2=79", "7*25=175", "36+3=39"};
+    private static final String[] EASY_MODE_LENGTH_FIVE = {"10+10=20", "21-11=10", "90-50=40", "80/40=2", "10*10=100"};
 
     private static final String[] HARD_MODE_LENGTH_FIVE = {"1+2=3", "2*4=8", "9-5=4", "6*0=0", "3*3=9"};
     private static final String[] HARD_MODE_LENGTH_SIX = {"3*4=12", "31*0=0", "7*5=35", "10-7=3", "8+7=15"};
@@ -24,6 +25,7 @@ public class EquationData {
     static {
         EASY_MODE_EQUATIONS.put(3, EASY_MODE_LENGTH_THREE);
         EASY_MODE_EQUATIONS.put(4, EASY_MODE_LENGTH_FOUR);
+        EASY_MODE_EQUATIONS.put(5, EASY_MODE_LENGTH_FIVE);
 
         HARD_MODE_EQUATIONS.put(5, HARD_MODE_LENGTH_FIVE);
         HARD_MODE_EQUATIONS.put(6, HARD_MODE_LENGTH_SIX);
