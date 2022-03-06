@@ -39,12 +39,14 @@ public interface NumbleModel {
     boolean isCorrect(char guessChar, int position);
 
     /**
-     * Checks if a character exists in the given equation
+     * Checks if a character exists in the given equation.
+     * If two same characters in wrong position, while it only has one in solution,
+     * then the last one will be marked as not exists.
      * @param guessChar
-     * @param position
+     * @param comparedWithGuess marks if the character in lhs has been compared with the same character in guess.
      * @return
      */
-    boolean exist(char guessChar, int position);
+    boolean exist(char guessChar, boolean[] comparedWithGuess);
 
     /**
      * Gets the number of columns on the board.

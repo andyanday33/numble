@@ -84,15 +84,61 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
             throw new MethodNotAvailableException("Game is over, no more guess can be made");
         }
         if (isValidGuess(guess)) {
-            return isCorrectSolution(guess);
+            //Store guess characters in cells
+            storeGuess(guess);
+            boolean isCorrect = isCorrectSolution(guess);
+            numberOfGuessMade++;
+            if (isCorrect) {
+                won = true;
+            } else {
+                if (numberOfGuessMade >= numRows) {
+                    lost = true;
+                }
+            }
+            return isCorrect;
         } else {
             throw new IllegalArgumentException("Invalid guess input");
         }
 
     }
 
+    private void storeGuess(String guess) {
+        for (int i = 0; i < numCols; i++) {
+            cells[numberOfGuessMade][i].guessChar = guess.charAt(i);
+        }
+    }
+
+
     private boolean isCorrectSolution(String guess) {
-        return false;
+        boolean isCorrect = true;
+        //Mark if the character in lhs has been compared with the same character in guess.
+        boolean[] comparedWithGuess = new boolean[guess.length()];
+        //Find all characters in right place.
+        for (int i = 0; i < guess.length(); i++) {
+            char guessChar = guess.charAt(i);
+            if (isCorrect(guessChar, i)) {
+                cells[numberOfGuessMade][i].state = Cell.State.CORRECT;
+                comparedWithGuess[i] = true;
+            }
+        }
+
+        for (int i = 0; i < guess.length(); i++) {
+            if (cells[numberOfGuessMade][i].state == Cell.State.CORRECT) {
+                continue;
+            }
+            char guessChar = guess.charAt(i);
+            if (exist(guessChar, comparedWithGuess)) {
+                //Guess character in wrong place
+                cells[numberOfGuessMade][i].state = Cell.State.WRONG_POSITION;
+                comparedWithGuess[i] = true;
+                isCorrect = false;
+            } else {
+                //Incorrect guess character
+                cells[numberOfGuessMade][i].state = Cell.State.NOT_EXIST;
+                isCorrect = false;
+            }
+        }
+        return isCorrect;
     }
 
     private boolean isValidGuess(String guess) {
@@ -120,11 +166,16 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public boolean isCorrect(char guessChar, int position) {
-        return false;
+        return guessChar == lhs.charAt(position);
     }
 
     @Override
-    public boolean exist(char guessChar, int position) {
+    public boolean exist(char guessChar, boolean[] comparedWithGuess) {
+        for (int i = 0; i < lhs.length(); i++) {
+            if (!comparedWithGuess[i] && guessChar == lhs.charAt(i)) {
+                return true;
+            }
+        }
         return false;
     }
 

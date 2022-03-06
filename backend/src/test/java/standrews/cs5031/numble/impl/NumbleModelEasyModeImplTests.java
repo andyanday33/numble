@@ -2,6 +2,7 @@ package standrews.cs5031.numble.impl;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -16,15 +17,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class NumbleModelEasyModeImplTests {
-    static NumbleModelEasyModeImpl model;
+    NumbleModelEasyModeImpl model;
     static MockedStatic<EquationData> equationData;
 
     @BeforeAll
-    public static void setup() {
+    public static void allSetup() {
         MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 3))
                 .thenReturn("3+2=5");
+    }
 
+    @BeforeEach
+    public void eachSetup() {
         model = new NumbleModelEasyModeImpl(2, 3);
     }
 
