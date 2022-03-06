@@ -157,4 +157,25 @@ public class NumbleModelEasyModeImplTests {
         }
     }
 
+    @Test
+    public void playerLosesWhenAllGuessAreWrong() {
+        model = new NumbleModelEasyModeImpl(2, 3);
+        String wrongSolution = "4+1";
+        assertFalse(model.guess(wrongSolution));
+        assertFalse(model.guess(wrongSolution));
+        assertEquals(2, model.getNumberOfGuessMade());
+        assertTrue(model.hasLost());
+        assertFalse(model.hasWon());
+    }
+
+
+    @Test
+    public void playerWinsWhenTheyGuessRightSolution() {
+        String correctSolution = "3+2";
+        assertTrue(model.guess(correctSolution));
+        assertEquals(1, model.getNumberOfGuessMade());
+        assertTrue(model.hasWon());
+        assertFalse(model.hasLost());
+    }
+
 }
