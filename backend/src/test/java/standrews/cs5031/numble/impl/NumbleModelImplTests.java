@@ -10,10 +10,10 @@ public class NumbleModelImplTests {
     @Test
     public void checkGame(){
 
-        NumbleModel game = new NumbleModelEasyModeImpl(5,5,10,"2+2+6");
+        NumbleModel game = new NumbleModelEasyModeImpl(5,5);
 
-        assertTrue(game.getNumRows()==5);
-        assertTrue(game.getNumCols()==5);
+        assertEquals(5, game.getNumRows());
+        assertEquals(5, game.getNumCols());
 
 
     }

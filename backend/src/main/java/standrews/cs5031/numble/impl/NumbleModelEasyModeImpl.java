@@ -4,6 +4,10 @@ import standrews.cs5031.numble.Cell;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 /**
  * Model implementation for the simple Numble game.
  */
@@ -44,9 +48,27 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
         rhs = Integer.parseInt(equation.substring(equalMarkIndex + 1));
     }
 
+    /**
+     * Checks if the current guess is valid; i.e is mathematically equal to the target value. Another implementation of this could
+     * include Dijkstras twostep algorithm
+     * @param guess String from the user
+     * @param rhs Target value
+     * @return boolean, True if the guess is equivalent to the rhs.
+     * @throws ScriptException
+     */
+
+    public boolean evaluate(String guess,int rhs) throws ScriptException {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
+        Object result = engine.eval("4*5-10");
+        String res = String.valueOf(result);
+        int fin = Integer.parseInt(res);
+        return fin==rhs;
+    }
 
     @Override
     public boolean guess(String guess) {
+
         return false;
     }
 
