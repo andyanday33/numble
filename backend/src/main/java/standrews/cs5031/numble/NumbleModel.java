@@ -2,6 +2,8 @@ package standrews.cs5031.numble;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
+import javax.script.ScriptException;
+
 public interface NumbleModel {
 
     enum Mode {EASY, HARD}
@@ -14,7 +16,7 @@ public interface NumbleModel {
      * @throws IllegalArgumentException if the guess is not a valid equation
      * @return true if this is right guess and the player wins, false otherwise
      */
-    boolean guess(String guess);
+    boolean guess(String guess) throws ScriptException;
 
     /**
      * Checks if the player has lost by wrongly guessing equation with last chance.

@@ -9,6 +9,8 @@ import standrews.cs5031.numble.Cell;
 import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
+
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -64,7 +66,7 @@ public class NumbleModelEasyModeImplTests {
     }
 
     @Test
-    public void noGuessAfterPlayerLoses() {
+    public void noGuessAfterPlayerLoses(){
 
         //Lose the game
         String wrongSolution = "3+1";
@@ -78,13 +80,35 @@ public class NumbleModelEasyModeImplTests {
 
 
     @Test
-    public void guessWithInvalidInputs() {
+    public void guessWithInvalidLength() {
 
-        String[] invalidInputs = {"", "1", "+", "1234", "1+2+3",
-                                    "1++", "+1-", "1A2", "1/2", "--5",
-                                    "1+2", "9*1", "4-2", "123"};
+        String[] invalidInputs = {"", "1", "+", "1234", "1+2+3"};
         for (String input: invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
+    @Test
+    public void guessWithInvalidChars() {
+
+        String[] invalidInputs = {"1++", "+1-", "1A2", "1/2", "--5"};
+        for (String input: invalidInputs) {
+            assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
+    @Test
+    public void guessWithInvalidValue() {
+
+        String[] invalidInputs = {"1+2", "9*1", "4-2", "123"};
+        for (String input: invalidInputs) {
+            assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
+    @Test
+    public void guessReturnsFalse() {
+
+        String[] invalidInputs = {"1+4", "4+1", "2+3"};
+        for (String input: invalidInputs) {
+            assertFalse(model.guess(input));
         }
     }
 

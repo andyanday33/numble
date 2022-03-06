@@ -7,6 +7,7 @@ import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.Config;
 import standrews.cs5031.numble.impl.NumbleModelEasyModeImpl;
 
+import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class NumbleAPI {
             try {
                 model.guess(guess);
                 return model;
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | ScriptException e) {
                 return null;
             }
         }
