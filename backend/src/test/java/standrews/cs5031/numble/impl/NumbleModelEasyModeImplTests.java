@@ -23,6 +23,8 @@ public class NumbleModelEasyModeImplTests {
         MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 3))
                 .thenReturn("3+2=5");
+        equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 7))
+                .thenReturn("111+222=333");
     }
 
     @BeforeEach
@@ -155,6 +157,21 @@ public class NumbleModelEasyModeImplTests {
         for (Cell cell: model.getCells()[0]) {
             assertEquals(Cell.State.CORRECT, cell.state);
         }
+    }
+
+    @Test
+    public void stateUpdateAfterWrongGuessWithMultiSameChars() {
+        model = new NumbleModelEasyModeImpl(2, 7);
+        String wrongGuess = "1*3*111";
+        assertFalse(model.guess(wrongGuess));
+        assertEquals(1, model.getNumberOfGuessMade());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][0].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][1].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][2].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][3].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][4].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][5].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][6].state);
     }
 
     @Test
