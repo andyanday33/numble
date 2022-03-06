@@ -1,6 +1,7 @@
 package standrews.cs5031.numble.impl;
 
 import standrews.cs5031.numble.Cell;
+import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
@@ -68,7 +69,22 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public boolean guess(String guess) {
+        if (hasLost() || hasWon()) {
+            throw new MethodNotAvailableException("Game is over, no more guess can be made");
+        }
+        if (isValidGuess(guess)) {
+            return isCorrectSolution(guess);
+        } else {
+            throw new IllegalArgumentException("Invalid guess input");
+        }
 
+    }
+
+    private boolean isCorrectSolution(String guess) {
+        return false;
+    }
+
+    private boolean isValidGuess(String guess) {
         return false;
     }
 
