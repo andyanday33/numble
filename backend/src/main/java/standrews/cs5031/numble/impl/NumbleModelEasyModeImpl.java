@@ -4,9 +4,6 @@ import standrews.cs5031.numble.Cell;
 import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 /**
@@ -50,21 +47,35 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     }
 
     /**
-     * Checks if the current guess is valid; i.e is mathematically equal to the target value. Another implementation of this could
-     * include Dijkstras twostep algorithm
+     * Checks if the current guess is mathematically equivalent to the rhs.
      * @param guess String from the user
      * @param rhs Target value
      * @return boolean, True if the guess is equivalent to the rhs.
      * @throws ScriptException
      */
 
-    public boolean evaluate(String guess,int rhs) throws ScriptException {
-        ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
-        Object result = engine.eval(guess);
-        String res = String.valueOf(result);
-        int fin = Integer.parseInt(res);
-        return fin==rhs;
+    public boolean evaluate(String guess,int rhs) throws IllegalArgumentException {
+
+        String[] guessParts = guess.split("((?=\\*))|((?=\\/))|((?=\\+))|((?=\\-))");
+
+        int total = 0;
+        for (int i = 0; i < guessParts.length; i++) {
+            if (!guessParts[i].contains("*") && !guessParts[i].contains("/")) {
+
+                int temp = Integer.parseInt(guessParts[i]);
+                total += temp;
+            } else if (guessParts[i].charAt(0) == '*') {
+
+                int temp = Integer.parseInt(guessParts[i].substring(1));
+                total = total * temp;
+            } else if (guessParts[i].charAt(0) == '/') {
+
+                int temp = Integer.parseInt(guessParts[i].substring(1));
+                total = total / temp;
+            }
+
+        }
+        return total==rhs;
     }
 
     @Override
@@ -131,6 +142,15 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     }
 
     private boolean isValidGuess(String guess) {
+        //Check guess is of the correct length
+        if(guess.length() != lhs.length()){
+            return false;
+        }
+        //Check guess is equal to rhs (and Check guess has no invalid symbols)
+        if(!evaluate(guess,rhs)){
+            return false;
+        }
+
         return true;
     }
 
