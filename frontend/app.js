@@ -79,7 +79,7 @@ const app = Vue.createApp({
                     let currentNumber = null;
                     let operation = null;
                     const num = new RegExp('[0-9]');
-                    const op = new RegExp('\\+|-');
+                    const op = new RegExp('\\+|-|\\*');
                     let valid = true;
     
                     for(i = Number(event.target.dataset.index) - 4; i <= Number(event.target.dataset.index); i++){
@@ -97,12 +97,22 @@ const app = Vue.createApp({
                         } else if(op.test(element.value)) {
                             if(operation == "addition"){
                                 answer += Number(currentNumber);
-                            } else if(operation == "extraction") {
+                            } else if (operation == "extraction") {
                                 answer -= Number(currentNumber);
+                            } else if (operation == "multiplication") {
+                                answer *= Number(currentNumber);
                             } else {
                                 answer = Number(currentNumber);
                             }
-                            element.value == "+" ? operation = "addition" : operation = "extraction";
+                            
+                            if (element.value == "+") {
+                                operation = "addition";
+                            } else if (element.value == "-") {
+                                operation = "extraction";
+                            } else if (element.value == "*") {
+                                operation = "multiplication";
+                            }
+
                             currentNumber = null;
                         }
                         //Do the operation in the last index
@@ -131,6 +141,25 @@ const app = Vue.createApp({
                         .then(response => response.json())
                         .then(data => {
                             console.log(data);
+                            let row = data.cells[this.usedRows];
+                            console.log(row);
+                            let j = 0;
+                            for(let i = this.usedRows * 5; i < (this.usedRows + 1) * 5; i++) {
+                                let state = row[j].state;
+                                console.log(row);
+                                console.log(state);
+                                const col = this.$refs?.[`input-${i}`];
+                                console.log(col);
+                                if (state == "NOT_EXIST") {
+                                    col.style.background = "gray";
+                                } else if (state == "WRONG_POSITION") {
+                                    col.style.background = "orange";
+                                } else {
+                                    col.style.background = "green";
+                                }
+                                j++;
+                            }
+
                             this.usedRows++;
                         })
                         .catch(err => console.error("ERROR: " + err));
