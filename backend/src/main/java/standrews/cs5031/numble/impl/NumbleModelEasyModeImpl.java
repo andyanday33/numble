@@ -100,7 +100,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
             }
             return isCorrect;
         } else {
-            throw new IllegalArgumentException("Invalid guess input");
+            throw new IllegalArgumentException("Invalid guess input: " + guess);
         }
 
     }
