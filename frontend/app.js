@@ -3,6 +3,7 @@ const app = Vue.createApp({
     //template: '<h2> I am template</h2>'
     data() {
         return {
+            gameWon: false,
             gameStarted: false,
             hardMode: false,
             usedRows: 0,
@@ -104,33 +105,51 @@ const app = Vue.createApp({
                             } else {
                                 answer = Number(currentNumber);
                             }
-                            
-                            if (element.value == "+") {
-                                operation = "addition";
-                            } else if (element.value == "-") {
-                                operation = "extraction";
-                            } else if (element.value == "*") {
-                                operation = "multiplication";
+
+                            console.log(element.value);
+                            switch (element.value) {
+                                case "+":
+                                    operation = "addition";
+                                    break;
+                                case "-":
+                                    operation = "extraction";
+                                    break;
+                                default:
+                                    operation = "multiplication";
+                                    break;
                             }
+                            console.log(currentNumber);
 
                             currentNumber = null;
                         }
                         //Do the operation in the last index
                         if(i == Number(event.target.dataset.index)) {
-                            operation == "addition" ? answer += Number(currentNumber) : answer -= Number(currentNumber);
+                            console.log(operation);
+                            switch (operation) {
+                                case "addition":
+                                    answer += Number(currentNumber);
+                                    break;
+                                case "extraction":
+                                    answer -= Number(currentNumber);
+                                    break;
+                                default:
+                                    answer *= Number(currentNumber);
+                                    break;
+                            }
                         }
                        
                     }
                     guessReqBody = {
                         guess : equationString
                     }
+                    console.log(equationString);
+                    console.log(answer);
                     console.log("answer string: " + guessReqBody);
                     
                     if(answer == this.rightHandSide){
                         
                         
                         console.log(JSON.stringify(guessReqBody));
-                        //TODO: Implement coloring logic
                         fetch(`http://127.0.0.1:8080/game/${this.gameId}/guess`, method = {
                             method: "POST",
                             headers: {
@@ -140,6 +159,13 @@ const app = Vue.createApp({
                         })
                         .then(response => response.json())
                         .then(data => {
+
+                            if(data.won){
+                                console.log("WON");
+                                this.gameWon = true;
+                            }
+                            console.log(data.won);
+
                             console.log(data);
                             let row = data.cells[this.usedRows];
                             console.log(row);
