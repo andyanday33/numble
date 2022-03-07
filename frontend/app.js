@@ -140,7 +140,7 @@ const app = Vue.createApp({
                        
                     }
                     guessReqBody = {
-                        guess : equationString
+                        equation : equationString
                     }
                     console.log(equationString);
                     console.log(answer);

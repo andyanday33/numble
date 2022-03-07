@@ -7,6 +7,7 @@ import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.Config;
 import standrews.cs5031.numble.impl.NumbleModelEasyModeImpl;
+import standrews.cs5031.numble.Guess;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,12 +56,12 @@ public class NumbleAPI {
     }
 
     @PostMapping("/game/{id}/guess")
-    public NumbleModel makeGuess(@PathVariable int id, @RequestBody String guess) {
-        System.out.println(guess);
+    public NumbleModel makeGuess(@PathVariable int id, @RequestBody Guess guess) {
+        String equation = guess.getEquation();
         NumbleModel model = games.get(id);
         if (model != null) {
             try {
-                model.guess(guess);
+                model.guess(equation);
                 return model;
             } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

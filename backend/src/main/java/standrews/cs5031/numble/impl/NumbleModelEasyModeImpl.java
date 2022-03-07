@@ -88,9 +88,6 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     @Override
     public boolean guess(String guess) {
 
-        JSONObject bodyJson = new JSONObject(guess);
-        guess = bodyJson.getString("guess");
-
         if (hasLost() || hasWon()) {
             throw new MethodNotAvailableException("Game is over, no more guess can be made");
         }
