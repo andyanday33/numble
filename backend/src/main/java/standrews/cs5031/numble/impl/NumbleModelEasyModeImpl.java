@@ -5,6 +5,7 @@ import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 import javax.script.ScriptException;
+import org.json.JSONObject;
 
 /**
  * Model implementation for the simple Numble game.
@@ -86,6 +87,10 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public boolean guess(String guess) {
+
+        JSONObject bodyJson = new JSONObject(guess);
+        guess = bodyJson.getString("guess");
+
         if (hasLost() || hasWon()) {
             throw new MethodNotAvailableException("Game is over, no more guess can be made");
         }

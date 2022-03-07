@@ -38,7 +38,6 @@
 
         <!--Render if there is an active game-->
         <section tag="game"  v-if="gameStarted">
-    
             <!--Render if the game is in easy mode-->
             <div tag="input-section" class="row top-buffer" v-if="!hardMode">
                 <div class="input-group row top-buffer justify-content-center">
@@ -52,8 +51,8 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0" data-index="4" ref="input-4" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col">=</p>
-                    <p class="h1 col" v-if="rightHandSide">{{ rightHandSide }}</p>
+                    <p class="h1 col text-center">=</p>
+                    <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                 <div class="input-group row top-buffer justify-content-center">
                     <input :disabled="usedRows != 1" :autofocus="usedRows == 1" data-index="5" ref="input-5" type="text" maxlength="1" pattern="[0-9]|\+|-" 
@@ -66,8 +65,8 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1"data-index="9" ref="input-9" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col">=</p>
-                    <p class="h1 col" v-if="rightHandSide">{{ rightHandSide }}</p>
+                    <p class="h1 col text-center">=</p>
+                    <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                 <div class="input-group row top-buffer justify-content-center" >
                     <input :disabled="usedRows != 2" data-index="10" ref="input-10" type="text" maxlength="1" pattern="[0-9]|\+|-" 
@@ -80,8 +79,8 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 2"data-index="14" ref="input-14" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col">=</p>
-                    <p class="h1 col" v-if="rightHandSide">{{ rightHandSide }}</p>
+                    <p class="h1 col text-center">=</p>
+                    <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                 <div class="input-group row top-buffer justify-content-center">
                     <input :disabled="usedRows != 3" data-index="15" ref="input-15" type="text" maxlength="1" pattern="[0-9]|\+|-" 
@@ -94,8 +93,8 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 3"data-index="19" ref="input-19" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col">=</p>
-                    <p class="h1 col" v-if="rightHandSide">{{ rightHandSide }}</p>
+                    <p class="h1 col text-center">=</p>
+                    <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                 <div class="input-group row top-buffer justify-content-center">
                     <input :disabled="usedRows != 4" data-index="20" ref="input-20" type="text" maxlength="1" pattern="[0-9]|\+|-" 
@@ -108,8 +107,8 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 4"data-index="24" ref="input-24" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col">=</p>
-                    <p class="h1 col" v-if="rightHandSide">{{ rightHandSide }}</p>
+                    <p class="h1 col text-center">=</p>
+                    <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                 <div class="input-group row top-buffer justify-content-center">
                     <input :disabled="usedRows != 5" data-index="25" ref="input-25" type="text" maxlength="1" pattern="[0-9]|\+|-" 
@@ -122,8 +121,8 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 5"data-index="29" ref="input-29" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col">=</p>
-                    <p class="h1 col" v-if="rightHandSide">{{ rightHandSide }}</p>
+                    <p class="h1 col text-center">=</p>
+                    <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                
             </div>

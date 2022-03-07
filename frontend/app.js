@@ -70,7 +70,7 @@ const app = Vue.createApp({
             }
         },
         checkEquation(event) {
-            //TODO: implement this logic
+            //TODO: Implement multiplication!
             if (event.key == "Enter") {
                 if (event.key == "Enter") {
                 
@@ -111,19 +111,22 @@ const app = Vue.createApp({
                         }
                        
                     }
-                    console.log("answer string: " + equationString);
+                    guessReqBody = {
+                        guess : equationString
+                    }
+                    console.log("answer string: " + guessReqBody);
                     
                     if(answer == this.rightHandSide){
                         
                         
-                        console.log(JSON.stringify(equationString));
+                        console.log(JSON.stringify(guessReqBody));
                         //TODO: Implement coloring logic
                         fetch(`http://127.0.0.1:8080/game/${this.gameId}/guess`, method = {
                             method: "POST",
                             headers: {
                                 'Content-Type' : 'application/json'
                             },
-                            body: JSON.stringify(equationString)
+                            body: JSON.stringify(guessReqBody)
                         })
                         .then(response => response.json())
                         .then(data => {

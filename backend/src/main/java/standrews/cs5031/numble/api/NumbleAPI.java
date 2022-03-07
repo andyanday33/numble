@@ -56,6 +56,7 @@ public class NumbleAPI {
 
     @PostMapping("/game/{id}/guess")
     public NumbleModel makeGuess(@PathVariable int id, @RequestBody String guess) {
+        System.out.println(guess);
         NumbleModel model = games.get(id);
         if (model != null) {
             try {
