@@ -50,6 +50,17 @@ const app = Vue.createApp({
         })
         .catch(err => console.error("Error! " + err))
         },
+        async restartGame() {
+            this.gameWon = false;
+            this.gameStarted = false;
+            this.hardMode = false;
+            this.usedRows = 0;
+            this.equationAnswer = null;
+            this.gameId = null;
+            this.rightHandSide = null;
+
+            await this.startGame();
+        },
         checkGameId() {
             let cookie = document.cookie;
             if (!cookie.gameId) {
