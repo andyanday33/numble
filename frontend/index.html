@@ -128,9 +128,10 @@
                     <p class="h1 col text-center">=</p>
                     <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div> -->
-                <section class="row top-buffer justify-content-center" tag="restart game" v-if="gameWon">
+                <section class="row top-buffer justify-content-center text-center" tag="restart game" v-if="gameWon">
+                    <h3>Replay the Game</h3>
                     <form>
-                        <select class="form-select" id="gameDifficultySelect">
+                        <select class="form-select top-buffer" id="gameDifficultySelect">
                         <option selected value="Easy">Easy Mode</option>
                         <option value="Hard">Hard Mode</option>
                         </select>
