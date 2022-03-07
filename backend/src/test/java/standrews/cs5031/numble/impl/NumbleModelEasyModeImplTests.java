@@ -25,6 +25,9 @@ public class NumbleModelEasyModeImplTests {
                 .thenReturn("3+2=5");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 7))
                 .thenReturn("111+222=333");
+        equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 5))
+                .thenReturn("2+5+2=9");
+
     }
 
     @BeforeEach
@@ -76,7 +79,9 @@ public class NumbleModelEasyModeImplTests {
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
     }
-
+    /**
+    Check that guesses that do not have the specified length (number of cols) throw an error
+     */
     @Test
     public void guessWithInvalidLength() {
         String[] invalidInputs = {"", "1", "+", "1234", "1+2+3"};
@@ -84,7 +89,9 @@ public class NumbleModelEasyModeImplTests {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
-
+    /**
+    Check that guesses that include nonsensical syntax throw an error
+     */
     @Test
     public void guessWithInvalidChars() {
         String[] invalidInputs = {"1++", "+1-", "1A2", "1/2", "--5"};
@@ -92,7 +99,9 @@ public class NumbleModelEasyModeImplTests {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
-
+    /**
+    Check that guesses that add up to the incorrect target value throw an error
+     */
     @Test
     public void guessWithInvalidValue() {
         String[] invalidInputs = {"1+2", "9*1", "4-2", "123"};
@@ -100,12 +109,38 @@ public class NumbleModelEasyModeImplTests {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
+    /**
+    Tests case of guesses that represent a decimal value (that would normally be rounded down and treated as an integer) instead throw an error
+     */
+    @Test
+    public void guessWithDecimal() {
+        String[] invalidInputs = {"11/2", "22/4"};
+        for (String input: invalidInputs) {
+            assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
 
+    /**
+     * Check that valid equations that add up to target value, but are not the exact correct solution, return false.
+     */
     @Test
     public void guessReturnsFalse() {
         String[] invalidInputs = {"1+4", "4+1", "2+3"};
         for (String input: invalidInputs) {
             assertFalse(model.guess(input));
+        }
+    }
+
+    /**
+     * Ensures that expressions are evaluated in a left to right fashion, not applying the rules of bodmas.
+     */
+    @Test
+    public void checkEvaluatedLeftToRight() {
+        model = new NumbleModelEasyModeImpl(2, 5);
+        //Strings that would equal the target 9 according to bodmas, but not according to left to right evaluation.
+        String[] invalidInputs = {"6+9/3", "1+2*4", "2+1*7"};
+        for (String input: invalidInputs) {
+            assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
 

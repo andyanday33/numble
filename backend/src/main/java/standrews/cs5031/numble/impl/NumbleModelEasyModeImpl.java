@@ -51,15 +51,16 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
      * @param guess String from the user
      * @param rhs Target value
      * @return boolean, True if the guess is equivalent to the rhs.
-     * @throws ScriptException
+     * @throws IllegalArgumentException
      */
 
     public boolean evaluate(String guess,int rhs) throws IllegalArgumentException {
-
+        //Splits guess string into each operator and the number its operating on. (as we are evaluating left to right)
         String[] guessParts = guess.split("((?=\\*))|((?=\\/))|((?=\\+))|((?=\\-))");
 
         int total = 0;
         for (int i = 0; i < guessParts.length; i++) {
+            //if operator isnt * or /, just parse string and add to running total
             if (!guessParts[i].contains("*") && !guessParts[i].contains("/")) {
 
                 int temp = Integer.parseInt(guessParts[i]);
@@ -71,7 +72,12 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
             } else if (guessParts[i].charAt(0) == '/') {
 
                 int temp = Integer.parseInt(guessParts[i].substring(1));
-                total = total / temp;
+                if(total % temp==0){
+                    total = total / temp;
+                }else{
+                    throw new IllegalArgumentException("No decimal values");
+                }
+
             }
 
         }
