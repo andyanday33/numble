@@ -6,9 +6,13 @@ import java.io.Serializable;
  * This shows the values needed to creat a game.
  */
 public class GameCreation implements Serializable {
-    private final int numRows;
-    private final int numCols;
-    private final NumbleModel.Mode mode;
+    private int numRows;
+    private int numCols;
+    private NumbleModel.Mode mode;
+
+    public GameCreation() {
+
+    }
 
     public GameCreation(int numRows, int numCols, NumbleModel.Mode mode) {
         this.numRows = numRows;
