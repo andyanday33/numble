@@ -4,7 +4,6 @@ import standrews.cs5031.numble.Cell;
 import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
-import javax.script.ScriptException;
 
 /**
  * Model implementation for the simple Numble game.
@@ -49,12 +48,10 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     /**
      * Checks if the current guess is mathematically equivalent to the rhs.
      * @param guess String from the user
-     * @param rhs Target value
      * @return boolean, True if the guess is equivalent to the rhs.
      * @throws IllegalArgumentException
      */
-
-    public boolean evaluate(String guess,int rhs) throws IllegalArgumentException {
+    public int evaluate(String guess) throws IllegalArgumentException {
         //Splits guess string into each operator and the number its operating on. (as we are evaluating left to right)
         String[] guessParts = guess.split("((?=\\*))|((?=\\/))|((?=\\+))|((?=\\-))");
 
@@ -81,7 +78,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
             }
 
         }
-        return total==rhs;
+        return total;
     }
 
     @Override
@@ -136,12 +133,11 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
             if (exist(guessChar, comparedWithGuess)) {
                 //Guess character in wrong place
                 cells[numberOfGuessMade][i].state = Cell.State.WRONG_POSITION;
-                isCorrect = false;
             } else {
                 //Incorrect guess character
                 cells[numberOfGuessMade][i].state = Cell.State.NOT_EXIST;
-                isCorrect = false;
             }
+            isCorrect = false;
         }
         return isCorrect;
     }
@@ -151,11 +147,12 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
         if(guess.length() != lhs.length()){
             return false;
         }
-        //Check guess is equal to rhs (and Check guess has no invalid symbols)
-        if(!evaluate(guess,rhs)){
+        //Check guess has no invalid symbols
+        try {
+            evaluate(guess);
+        } catch (IllegalArgumentException e) {
             return false;
         }
-
         return true;
     }
 
