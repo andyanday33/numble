@@ -22,7 +22,7 @@ public class NumbleAPI {
     private int gameId = 0;
     private final Map<Integer, NumbleModel> games = new HashMap<>();
     Logger logger = Logger.getLogger(NumbleAPI.class.getName());
-    
+
     @PostMapping("/game")
     public Integer startGame(@RequestBody GameCreation gameCreation) {
         NumbleModel model = null;
@@ -37,11 +37,11 @@ public class NumbleAPI {
             }
             try {
                 model = new NumbleModelEasyModeImpl(numRows, numCols);
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
             }
 
-        } else if(gameCreation.getMode() == NumbleModel.Mode.HARD) {
+        } else if (gameCreation.getMode() == NumbleModel.Mode.HARD) {
             if (numRows == 0) {
                 numRows = Config.HARD_MODE_NUM_OF_ROWS;
             }
@@ -50,10 +50,10 @@ public class NumbleAPI {
             }
             try {
                 model = new NumbleModelHardModeImpl(numRows, numCols);
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
             }
-        } else{
+        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game mode doesnt exist");
         }
         games.put(++gameId, model);

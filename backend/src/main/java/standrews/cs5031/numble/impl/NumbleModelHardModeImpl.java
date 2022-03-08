@@ -19,9 +19,9 @@ public class NumbleModelHardModeImpl implements NumbleModel {
     private final int numRows;
 
     /**
-     * The desired equation.
+     * The desired solution.
      */
-    private final String equation;
+    private final String solution;
 
     private int numberOfGuessMade;
     private Cell[][] cells;
@@ -43,7 +43,7 @@ public class NumbleModelHardModeImpl implements NumbleModel {
         }
 
         //Get a random equation from data source.
-        this.equation = EquationData.getRandomEquation(Mode.HARD, numCols);
+        this.solution = EquationData.getRandomEquation(Mode.HARD, numCols);
     }
     /**
      * Evaluates one side of the guess expression to an integer. Splits the expression into number-operator pairs and handles each
@@ -87,9 +87,9 @@ public class NumbleModelHardModeImpl implements NumbleModel {
             } else if (guessParts[i].charAt(0) == '/') {
 
                 int temp = Integer.parseInt(guessParts[i].substring(1));
-                if(total % temp==0){
+                if (total % temp == 0) {
                     total = total / temp;
-                }else{
+                } else {
                     throw new IllegalArgumentException("No decimal values");
                 }
 
@@ -148,7 +148,7 @@ public class NumbleModelHardModeImpl implements NumbleModel {
                 continue;
             }
             char guessChar = guess.charAt(i);
-            if (exist(guessChar, comparedWithGuess)) {
+            if (checkExists(guessChar, comparedWithGuess)) {
                 //Guess character in wrong place
                 cells[numberOfGuessMade][i].state = Cell.State.WRONG_POSITION;
             } else {
@@ -162,10 +162,10 @@ public class NumbleModelHardModeImpl implements NumbleModel {
 
     private boolean isValidGuess(String guess) {
         //Check guess is of the correct length
-        if(guess.length() != equation.length()){
+        if (guess.length() != solution.length()) {
             return false;
         }
-        if (!containsAllRightChars(guess)) {
+        if (!usesSolvedChars(guess)) {
             return false;
         }
         //Check guess has no invalid symbols and lhs really equals to rhs
@@ -185,11 +185,12 @@ public class NumbleModelHardModeImpl implements NumbleModel {
     /**
      * This checks if guess reused all characters which are the “right character, right place” and “right
      * character, wrong place”.
-     * @param guess the String equation player guessed
+     *
+     * @param guess the String solution player guessed
      * @return true if all right characters in last guess is in current guess expression, false otherwise.
      */
-    private boolean containsAllRightChars(String guess) {
-        List<Character> lastRightCharsGuessed = getLastRightCharsGuessed();
+    private boolean usesSolvedChars(String guess) {
+        List<Character> lastRightCharsGuessed = getPreviousSolvedChars();
         for (int i = 0; i < guess.length(); i++) {
             if (lastRightCharsGuessed.size() == 0) {
                 break;
@@ -202,9 +203,10 @@ public class NumbleModelHardModeImpl implements NumbleModel {
 
     /**
      * This extracts all characters in previous row which are marked as "CORRECT" or "WRONG_POSITION".
+     *
      * @return a list of characters rightly guessed in previous row.
      */
-    private List<Character> getLastRightCharsGuessed() {
+    private List<Character> getPreviousSolvedChars() {
         List<Character> lastRightCharsGuessed = new LinkedList<>();
         if (numberOfGuessMade - 1 >= 0) {
             for (Cell cell : cells[numberOfGuessMade - 1]) {
@@ -229,13 +231,13 @@ public class NumbleModelHardModeImpl implements NumbleModel {
 
     @Override
     public boolean isCorrect(char guessChar, int position) {
-        return guessChar == equation.charAt(position);
+        return guessChar == solution.charAt(position);
     }
 
     @Override
-    public boolean exist(char guessChar, boolean[] comparedWithGuess) {
-        for (int i = 0; i < equation.length(); i++) {
-            if (!comparedWithGuess[i] && guessChar == equation.charAt(i)) {
+    public boolean checkExists(char guessChar, boolean[] comparedWithGuess) {
+        for (int i = 0; i < solution.length(); i++) {
+            if (!comparedWithGuess[i] && guessChar == solution.charAt(i)) {
                 comparedWithGuess[i] = true;
                 return true;
             }
