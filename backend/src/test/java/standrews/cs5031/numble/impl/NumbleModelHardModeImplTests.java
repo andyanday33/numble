@@ -27,6 +27,8 @@ public class NumbleModelHardModeImplTests {
                 .thenReturn("4321+11=4332");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 7))
                 .thenReturn("2+5+2=9");
+        equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 9))
+                .thenReturn("(15)=10+5");
 
     }
 
@@ -184,9 +186,21 @@ public class NumbleModelHardModeImplTests {
     public void checkEvaluatedLeftToRight() {
         model = new NumbleModelHardModeImpl(2, 7);
         //Strings that would equal the target 9 according to bodmas, but not according to left to right evaluation.
-        String[] invalidInputs = {"6+9/3=9", "1+2*4=9", "2+1*7=9"};
+        String[] invalidInputs = {"6+9/3=9", "1+2*4=9"};
         for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
+    /**
+     * Ensures that expressions that have operators on both sides of the equal sign are treated as valid.
+     */
+    @Test
+    public void checkOperandsOnBothSides() {
+        model = new NumbleModelHardModeImpl(3, 9);
+
+        String[] invalidInputs = {"2*3=(8-2)","(16)=10+6","10+5=(15)"};
+        for (String input : invalidInputs) {
+            assertFalse(model.guess(input));
         }
     }
 
