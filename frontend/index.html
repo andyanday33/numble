@@ -54,11 +54,9 @@
 
             <!--Render if the game is in hard mode-->
             <div class="row top-buffer" v-if="hardMode">
-                <div class="input-group row top-buffer justify-content-center">
-                    <div v-for="(m, index1) in 8" :key="index1" class="input-group row top-buffer justify-content-center">
-                        <input v-for="(n,index2) in 10" :key ="index2" :disabled="usedRows != index1 || gameEnded" :data-index="index1 * 10 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
-                        class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); sendEquation($event)" @keyup.delete="focusLeft($event)" @keyup.right="focusRight($event)" @keyup.left="focusLeft($event)">
-                    </div>
+                <div v-for="(m, index1) in 8" :key="index1" class="input-group row top-buffer justify-content-center">
+                    <input v-for="(n,index2) in 10" :key ="index2" :disabled="usedRows != index1 || gameEnded" :data-index="index1 * 10 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); sendEquation($event)" @keyup.delete="focusLeft($event)" @keyup.right="focusRight($event)" @keyup.left="focusLeft($event)">
                 </div>
             </div>
 
