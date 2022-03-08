@@ -44,8 +44,10 @@
             
             <!--Render if the game is in easy mode-->
             <div tag="input-section" class="row top-buffer" v-if="!hardMode">
-                <div class="input-group row top-buffer justify-content-center">
-                    <input :disabled="usedRows != 0 || gameWon" :autofocus="usedRows == 0" data-index="0" ref="input-0" type="text" maxlength="1" pattern="[0-9]|\+|-" 
+                <div v-for="(m, index1) in 5" :key="index1" class="input-group row top-buffer justify-content-center">
+                    <input v-for="(n,index2) in 5" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 5 + index2" :ref="getReferenceEasy(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0);checkEquationEasy($event)">
+                    <!-- <input :disabled="usedRows != 0 || gameWon" :autofocus="usedRows == 0" data-index="0" ref="input-0" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0 || gameWon" data-index="1" ref="input-1" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
@@ -54,12 +56,14 @@
                     <input :disabled="usedRows != 0 || gameWon" data-index="3" ref="input-3" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 0 || gameWon" data-index="4" ref="input-4" type="text" maxlength="1" pattern="[0-9]|\+|-" 
-                    class="form-control col border-solid border-2 text-center" @keyup="focusPrevOnMin($event, 0); checkEquation($event)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusPrevOnMin($event, 0); checkEquation($event)"> -->
                     <p class="h1 col text-center">=</p>
                     <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
-                <div class="input-group row top-buffer justify-content-center">
-                    <input :disabled="usedRows != 1 || gameWon" :autofocus="usedRows == 1" data-index="5" ref="input-5" type="text" maxlength="1" pattern="[0-9]|\+|-" 
+                <!-- <div class="input-group row top-buffer justify-content-center">
+                    <input v-for="(n,index) in 5" :key ="index" :disabled="usedRows != 1 || gameWon" :data-index="index" :ref="getReference(index)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0);checkEquationEasy($event)"> -->
+                    <!-- <input :disabled="usedRows != 1 || gameWon" :autofocus="usedRows == 1" data-index="5" ref="input-5" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1 || gameWon" data-index="6" ref="input-6" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
@@ -68,8 +72,8 @@
                     <input :disabled="usedRows != 1 || gameWon" data-index="8" ref="input-8" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
                     <input :disabled="usedRows != 1 || gameWon"data-index="9" ref="input-9" type="text" maxlength="1" pattern="[0-9]|\+|-" 
-                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
-                    <p class="h1 col text-center">=</p>
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)"> -->
+                    <!-- <p class="h1 col text-center">=</p>
                     <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
                 <div class="input-group row top-buffer justify-content-center" >
@@ -113,7 +117,7 @@
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); checkEquation($event)">
                     <p class="h1 col text-center">=</p>
                     <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
-                </div>
+                </div> -->
                 <!-- <div class="input-group row top-buffer justify-content-center">
                     <input :disabled="usedRows != 5 || gameWon" data-index="25" ref="input-25" type="text" maxlength="1" pattern="[0-9]|\+|-" 
                     class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0)">
@@ -144,6 +148,12 @@
             <!--Render if the game is in hard mode-->
             <div class="row top-buffer" v-if="hardMode">
                 <h3>Hard Mode</h3>
+                <div class="input-group row top-buffer justify-content-center">
+                    <div v-for="(m, index1) in 8" :key="index1" class="input-group row top-buffer justify-content-center">
+                        <input v-for="(n,index2) in 6" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 5 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                        class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0);checkEquationHard($event)">
+                    
+                </div>
             </div>
         </section>
     </main>

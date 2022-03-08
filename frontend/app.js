@@ -16,22 +16,17 @@ const app = Vue.createApp({
         async startGame() {
             gameMode = document.querySelector('#gameDifficultySelect').value;
             console.log(gameMode);
-            let gameReqBody = null
-            if(gameMode == "Easy"){
-                gameReqBody = {
+
+            //We can implement customized number of rows and cols here in the future
+            let gameReqBody = {
                     rows: 0,
                     cols: 0,
                     mode: gameMode.toUpperCase()
-                }
-            } else {
-                gameReqBody = {
-                    rows: 6,
-                    cols: 6,
-                    mode: gameMode.toUpperCase()
                 };
-                this.hardMode = true;
-            }
+            
+            gameMode == "Hard" ? this.hardMode = true : this.hardMode = false;
             //this.gameStarted = true;
+
             await fetch('http://127.0.0.1:8080/game', method = {
                 method: 'POST',
                 headers: {
@@ -50,18 +45,24 @@ const app = Vue.createApp({
             console.error("Error! " + err);
             alert("Can not connect to the server!");
         });
-            fetch(`http://127.0.0.1:8080/game/${this.gameId}/rhs`, method = {
-                method: "GET",
-                headers: {
-                    'Content-Type' : 'application/json'
-                },
+            //Ask for the right hand side if the game is in easy mode
+            if(!this.hardMode)
+            {
+                fetch(`http://127.0.0.1:8080/game/${this.gameId}/rhs`, method = {
+                        method: "GET",
+                        headers: {
+                            'Content-Type' : 'application/json'
+                        },
+                    })
+            .then(response => response.json())
+            .then(data => {
+                this.rightHandSide = data;
             })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            this.rightHandSide = data;
+            .catch(err => {
+                console.error("Error! " + err);
+                alert("Could not connect to the server!");
         })
-        .catch(err => console.error("Error! " + err))
+            }
         },
         async restartGame() {
             this.gameWon = false;
@@ -85,19 +86,19 @@ const app = Vue.createApp({
         focusNextOnMax(event, max) {
             if (event.target.value.length === max) {
                 const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
-                if (nextElement) nextElement.focus();
+                console.log(nextElement);
+                if (typeof nextElement !== "undefined") nextElement[0].focus();
             }
         },
         focusPrevOnMin(event, min) {
             if (event.target.value.length === min) {
                 const prevElement = this.$refs?.[`input-${Number(event.target.dataset.index) - 1}`];
-                if (prevElement) prevElement.focus();
+                if (prevElement) prevElement[0].focus();
             }
         },
-        checkEquation(event) {
-            //TODO: Implement multiplication!
+        checkEquationEasy(event) {
             if (event.key == "Enter") {
-                if (event.key == "Enter") {
+        
                 
                     let equationString = ""; //The string piece that is going to be sent to backend
                     let answer = 0;
@@ -110,67 +111,71 @@ const app = Vue.createApp({
                     for(i = Number(event.target.dataset.index) - 4; i <= Number(event.target.dataset.index); i++){
                         const element = this.$refs?.[`input-${i}`];
                         console.log(element);
-                        equationString += String(element.value);
-                        //if input is a number
-                        if(num.test(element.value)) {
-                            if (currentNumber == null){
-                                currentNumber =  element.value;
-                            } else {
-                                currentNumber += String(element.value);
-                            }
-                        //if input is an operation such as + or -
-                        } else if(op.test(element.value)) {
-                            if(operation == "addition"){
-                                answer += Number(currentNumber);
-                            } else if (operation == "extraction") {
-                                answer -= Number(currentNumber);
-                            } else if (operation == "multiplication") {
-                                answer *= Number(currentNumber);
-                            } else {
-                                answer = Number(currentNumber);
-                            }
-
-                            console.log(element.value);
-                            switch (element.value) {
-                                case "+":
-                                    operation = "addition";
-                                    break;
-                                case "-":
-                                    operation = "extraction";
-                                    break;
-                                default:
-                                    operation = "multiplication";
-                                    break;
-                            }
-                            console.log(currentNumber);
-
-                            currentNumber = null;
-                        }
-                        //Do the operation in the last index
-                        if(i == Number(event.target.dataset.index)) {
-                            console.log(operation);
-                            switch (operation) {
-                                case "addition":
+                        if(!element){
+                            valid = false;
+                        } else {
+                            let inputField = element[0];
+                            equationString += String(inputField.value);
+                            //if input is a number
+                            if(num.test(inputField.value)) {
+                                if (currentNumber == null){
+                                    currentNumber =  inputField.value;
+                                } else {
+                                    currentNumber += String(inputField.value);
+                                }
+                            //if input is an operation such as + or -
+                            } else if(op.test(inputField.value)) {
+                                if(operation == "addition"){
                                     answer += Number(currentNumber);
-                                    break;
-                                case "extraction":
+                                } else if (operation == "extraction") {
                                     answer -= Number(currentNumber);
-                                    break;
-                                default:
+                                } else if (operation == "multiplication") {
                                     answer *= Number(currentNumber);
-                                    break;
+                                } else {
+                                    answer = Number(currentNumber);
+                                }
+
+                                console.log(inputField.value);
+                                switch (inputField.value) {
+                                    case "+":
+                                        operation = "addition";
+                                        break;
+                                    case "-":
+                                        operation = "extraction";
+                                        break;
+                                    default:
+                                        operation = "multiplication";
+                                        break;
+                                }
+                                console.log(currentNumber);
+
+                                currentNumber = null;
                             }
+                            //Do the operation in the last index
+                            if(i == Number(event.target.dataset.index)) {
+                                console.log(operation);
+                                switch (operation) {
+                                    case "addition":
+                                        answer += Number(currentNumber);
+                                        break;
+                                    case "extraction":
+                                        answer -= Number(currentNumber);
+                                        break;
+                                    default:
+                                        answer *= Number(currentNumber);
+                                        break;
+                                }
+                            }
+                        
                         }
-                       
+                        guessReqBody = {
+                            expression : equationString
+                        }
+                        console.log(equationString);
+                        console.log(answer);
+                        console.log("answer string: " + guessReqBody);
                     }
-                    guessReqBody = {
-                        expression : equationString
-                    }
-                    console.log(equationString);
-                    console.log(answer);
-                    console.log("answer string: " + guessReqBody);
-                    
-                    if(answer == this.rightHandSide){
+                    if(answer == this.rightHandSide && valid){
                         
                         
                         console.log(JSON.stringify(guessReqBody));
@@ -198,7 +203,7 @@ const app = Vue.createApp({
                                 let state = row[j].state;
                                 console.log(row);
                                 console.log(state);
-                                const col = this.$refs?.[`input-${i}`];
+                                const col = this.$refs?.[`input-${i}`][0];
                                 console.log(col);
                                 if (state == "NOT_EXIST") {
                                     col.style.background = "gray";
@@ -212,15 +217,29 @@ const app = Vue.createApp({
 
                             this.usedRows++;
                         })
-                        .catch(err => console.error("ERROR: " + err));
+                        .catch(err => {
+                            alert("Equation is not right!");
+                            console.error("ERROR: " + err)
+                        });
                         
                     } else {
                         alert("Equation isn't right!");
                     }
                 
-            
-                }
             }
+        },
+        checkEquationHard() {
+
+        }
+    },
+    computed: {
+        //These are for UX purposes, not really necessary
+        //Basically gives each input a reference string to make it possible to switch between inputs
+        getReferenceEasy() {
+            return (index1,index2) => `input-${index1 * 5 + index2}`
+        },
+        getReferenceHard() {
+            return (index1, index2) => `input-${index1 * 6 + index2}`
         }
     }
 });
