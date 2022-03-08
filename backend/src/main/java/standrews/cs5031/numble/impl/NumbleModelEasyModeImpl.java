@@ -131,7 +131,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
                 continue;
             }
             char guessChar = guess.charAt(i);
-            if (exist(guessChar, comparedWithGuess)) {
+            if (checkExists(guessChar, comparedWithGuess)) {
                 //Guess character in wrong place
                 cells[numberOfGuessMade][i].state = Cell.State.WRONG_POSITION;
             } else {
@@ -173,7 +173,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     }
 
     @Override
-    public boolean exist(char guessChar, boolean[] comparedWithGuess) {
+    public boolean checkExists(char guessChar, boolean[] comparedWithGuess) {
         for (int i = 0; i < lhs.length(); i++) {
             if (!comparedWithGuess[i] && guessChar == lhs.charAt(i)) {
                 comparedWithGuess[i] = true;
