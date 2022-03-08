@@ -38,15 +38,15 @@
         
         <!--Render if there is an active game-->
         <section tag="game"  v-if="gameStarted">
-            <section tag="game won notifier" v-if="gameWon" class="row text-center top-buffer">
+            <section tag="game won notifier" v-if="gameEnded" class="row text-center top-buffer">
                 <h2> Game Won, Congrats!</h2>
             </section>
             
             <!--Render if the game is in easy mode-->
             <div tag="input-section" class="row top-buffer" v-if="!hardMode">
                 <div v-for="(m, index1) in 5" :key="index1" class="input-group row top-buffer justify-content-center">
-                    <input v-for="(n,index2) in 5" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 5 + index2" :ref="getReferenceEasy(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
-                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); sendEquation($event)">
+                    <input v-for="(n,index2) in 5" :key ="index2" :disabled="usedRows != index1 || gameEnded" :data-index="index1 * 5 + index2" :ref="getReferenceEasy(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); sendEquation($event)" @keyup.right="focusRight($event)" @keyup.left="focusLeft($event)">
                     <p class="h1 col text-center">=</p>
                     <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
@@ -56,13 +56,14 @@
             <div class="row top-buffer" v-if="hardMode">
                 <div class="input-group row top-buffer justify-content-center">
                     <div v-for="(m, index1) in 8" :key="index1" class="input-group row top-buffer justify-content-center">
-                        <input v-for="(n,index2) in 6" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 6 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
-                        class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); sendEquation($event)">
+                        <input v-for="(n,index2) in 10" :key ="index2" :disabled="usedRows != index1 || gameEnded" :data-index="index1 * 10 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                        class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); sendEquation($event)" @keyup.right="focusRight($event)" @keyup.left="focusLeft($event)">
                     </div>
                 </div>
             </div>
 
-            <section class="row top-buffer justify-content-center text-center" tag="restart game" v-if="gameWon">
+            <!--Render if the game has won or lost-->
+            <section class="row top-buffer justify-content-center text-center" tag="restart game" v-if="gameEnded">
                 <h3>Replay the Game</h3>
                 <form>
                     <select class="form-select top-buffer" id="gameDifficultySelect">
