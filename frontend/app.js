@@ -120,7 +120,7 @@ const app = Vue.createApp({
             if (typeof prevElement !== "undefined") {
                 prevElement[0].focus();
                 if(event.key == "Backspace" || event.key == "Delete") {
-                    prevElement[0].value = "";
+                    if(!prevElement[0].disabled) prevElement[0].value = "";
                 }
             }
         },
