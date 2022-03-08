@@ -1,12 +1,33 @@
 package standrews.cs5031.numble.model;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
+import lombok.Getter;
 import standrews.cs5031.numble.exception.MethodNotAvailableException;
 
+@Getter
+public abstract class NumbleModel {
+    private final int numCols;
+    private final int numRows;
 
-public interface NumbleModel {
+    private int numberOfGuessMade;
+    private Cell[][] cells;
 
-    enum Mode {EASY, HARD}
+    private boolean won = false;
+    private boolean lost = false;
+
+    public enum Mode {EASY, HARD}
+
+    public NumbleModel(int numRows, int numCols) {
+        this.numCols = numCols;
+        this.numRows = numRows;
+        numberOfGuessMade = 0;
+        cells = new Cell[numRows][numCols];
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                cells[row][col] = new Cell(row, col);
+            }
+        }
+    }
+
 
     /**
      * The first time this is called, the game starts and
@@ -18,19 +39,37 @@ public interface NumbleModel {
      * @throws IllegalArgumentException    if the guess is not a valid equation
      * @throws MethodNotAvailableException if the game is over - player wins or loses.
      */
-    boolean guess(String guess);
+    public boolean guess(String guess) {
+        if (won|| lost) {
+            throw new MethodNotAvailableException("Game is over, no more guess can be made");
+        }
+        if (isValidGuess(guess)) {
+            //Store guess characters in cells
+            storeGuess(guess);
+            boolean isCorrect = isCorrectSolution(guess);
+            numberOfGuessMade++;
+            if (isCorrect) {
+                won = true;
+            } else {
+                if (numberOfGuessMade >= numRows) {
+                    lost = true;
+                }
+            }
+            return isCorrect;
+        } else {
+            throw new IllegalArgumentException("Invalid guess input: " + guess);
+        }
+    }
 
-    /**
-     * Checks if the player has lost by wrongly guessing equation with last chance.
-     */
-    @JsonGetter("lost")
-    boolean hasLost();
+    protected abstract boolean isCorrectSolution(String guess);
 
-    /**
-     * Checks if the player made a right guess.
-     */
-    @JsonGetter("won")
-    boolean hasWon();
+    private void storeGuess(String guess) {
+        for (int i = 0; i < numCols; i++) {
+            cells[numberOfGuessMade][i].setGuessChar(guess.charAt(i));
+        }
+    }
+
+    protected abstract boolean isValidGuess(String guess);
 
     /**
      * Checks if a character is in right place
@@ -39,7 +78,7 @@ public interface NumbleModel {
      * @param position
      * @return
      */
-    boolean isCorrect(char guessChar, int position);
+    protected abstract boolean isCorrect(char guessChar, int position);
 
     /**
      * Checks if a character exists in the given equation.
@@ -50,21 +89,9 @@ public interface NumbleModel {
      * @param comparedWithGuess marks if the character in lhs has been compared with the same character in guess.
      * @return
      */
-    boolean checkExists(char guessChar, boolean[] comparedWithGuess);
+    protected abstract boolean checkExists(char guessChar, boolean[] comparedWithGuess);
 
-    /**
-     * Gets the number of columns on the board.
-     */
-    int getNumCols();
 
-    /**
-     * Gets the number of rows on the board.
-     */
-    int getNumRows();
+    public abstract Mode getMode();
 
-    int getNumberOfGuessMade();
-
-    Cell[][] getCells();
-
-    Mode getMode();
 }

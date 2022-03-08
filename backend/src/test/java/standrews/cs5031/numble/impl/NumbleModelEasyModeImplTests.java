@@ -61,7 +61,7 @@ public class NumbleModelEasyModeImplTests {
         //Win the game
         String correctSolution = "3+2";
         assertTrue(model.guess(correctSolution));
-        assertTrue(model.hasWon());
+        assertTrue(model.isWon());
 
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
@@ -74,7 +74,7 @@ public class NumbleModelEasyModeImplTests {
         String wrongSolution = "4+1";
         assertFalse(model.guess(wrongSolution));
         assertFalse(model.guess(wrongSolution));
-        assertTrue(model.hasLost());
+        assertTrue(model.isLost());
 
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
@@ -220,8 +220,8 @@ public class NumbleModelEasyModeImplTests {
         assertFalse(model.guess(wrongSolution));
         assertFalse(model.guess(wrongSolution));
         assertEquals(2, model.getNumberOfGuessMade());
-        assertTrue(model.hasLost());
-        assertFalse(model.hasWon());
+        assertTrue(model.isLost());
+        assertFalse(model.isWon());
     }
 
 
@@ -230,8 +230,8 @@ public class NumbleModelEasyModeImplTests {
         String correctSolution = "3+2";
         assertTrue(model.guess(correctSolution));
         assertEquals(1, model.getNumberOfGuessMade());
-        assertTrue(model.hasWon());
-        assertFalse(model.hasLost());
+        assertTrue(model.isWon());
+        assertFalse(model.isLost());
     }
 
 }
