@@ -47,7 +47,7 @@ the initalisation of the game.  The method will return the updated game state.
 will provide an interactive page for using the API methods.)
 
 
-**HOW TO PLAY **
+**HOW TO PLAY**
 
 To launch the game, first clone the repository. Navigate to the 'backend' directory in the terminal and run 'gradle bootRun'. Then go to the browser and go to the URL 'http://localhost:63342/project-code/Numble/frontend/' to find the web interface. To run the entire test suite, run 'gradle test'.
 
