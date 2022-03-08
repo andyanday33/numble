@@ -50,7 +50,7 @@ public class NumbleModelHardModeImplTests {
         assertEquals(6, model.getNumCols());
         for (int i = 0; i < model.getNumRows(); i++) {
             for (int j = 0; j < model.getNumCols(); j++) {
-                assertEquals(Cell.State.INIT, model.getCells()[i][j].state);
+                assertEquals(Cell.State.INIT, model.getCells()[i][j].getState());
             }
         }
     }
@@ -196,7 +196,7 @@ public class NumbleModelHardModeImplTests {
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         for (int i = 0; i < model.getNumCols(); i++) {
-            assertEquals(wrongGuess.charAt(i), model.getCells()[0][i].guessChar);
+            assertEquals(wrongGuess.charAt(i), model.getCells()[0][i].getGuessChar());
         }
     }
 
@@ -206,7 +206,7 @@ public class NumbleModelHardModeImplTests {
         assertTrue(model.guess(rightGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         for (int i = 0; i < model.getNumCols(); i++) {
-            assertEquals(rightGuess.charAt(i), model.getCells()[0][i].guessChar);
+            assertEquals(rightGuess.charAt(i), model.getCells()[0][i].getGuessChar());
         }
     }
 
@@ -215,12 +215,12 @@ public class NumbleModelHardModeImplTests {
         String wrongGuess = "5*3=15";
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][0].state);
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][1].state);
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][2].state);
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].state);
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].state);
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][5].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][0].getState());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][1].getState());
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][2].getState());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].getState());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].getState());
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][5].getState());
     }
 
     @Test
@@ -229,7 +229,7 @@ public class NumbleModelHardModeImplTests {
         assertTrue(model.guess(rightGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         for (Cell cell : model.getCells()[0]) {
-            assertEquals(Cell.State.CORRECT, cell.state);
+            assertEquals(Cell.State.CORRECT, cell.getState());
         }
     }
 
@@ -241,29 +241,29 @@ public class NumbleModelHardModeImplTests {
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         //Cell for the first 1
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][0].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][0].getState());
         //Cell for the second 1
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][1].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][1].getState());
         //Cell for the third 1
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][2].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][2].getState());
         //Cell for the fourth 1
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].getState());
         //Cell for +
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].getState());
         //Cell for the first 2
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][5].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][5].getState());
         //Cell for the second 2
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][6].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][6].getState());
         //Cell for =
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][7].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][7].getState());
         //Cell for the fifth 1
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][8].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][8].getState());
         //Cell for the sixth 1
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][9].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][9].getState());
         //Cell for the first 3
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][10].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][10].getState());
         //Cell for the second 3
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][11].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][11].getState());
     }
 
     @Test

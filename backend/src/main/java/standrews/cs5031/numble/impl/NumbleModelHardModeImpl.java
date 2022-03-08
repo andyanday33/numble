@@ -125,7 +125,7 @@ public class NumbleModelHardModeImpl implements NumbleModel {
 
     private void storeGuess(String guess) {
         for (int i = 0; i < numCols; i++) {
-            cells[numberOfGuessMade][i].guessChar = guess.charAt(i);
+            cells[numberOfGuessMade][i].setGuessChar(guess.charAt(i));
         }
     }
 
@@ -138,22 +138,22 @@ public class NumbleModelHardModeImpl implements NumbleModel {
         for (int i = 0; i < guess.length(); i++) {
             char guessChar = guess.charAt(i);
             if (isCorrect(guessChar, i)) {
-                cells[numberOfGuessMade][i].state = Cell.State.CORRECT;
+                cells[numberOfGuessMade][i].setState(Cell.State.CORRECT);
                 comparedWithGuess[i] = true;
             }
         }
 
         for (int i = 0; i < guess.length(); i++) {
-            if (cells[numberOfGuessMade][i].state == Cell.State.CORRECT) {
+            if (cells[numberOfGuessMade][i].getState() == Cell.State.CORRECT) {
                 continue;
             }
             char guessChar = guess.charAt(i);
             if (checkExists(guessChar, comparedWithGuess)) {
                 //Guess character in wrong place
-                cells[numberOfGuessMade][i].state = Cell.State.WRONG_POSITION;
+                cells[numberOfGuessMade][i].setState(Cell.State.WRONG_POSITION);
             } else {
                 //Incorrect guess character
-                cells[numberOfGuessMade][i].state = Cell.State.NOT_EXIST;
+                cells[numberOfGuessMade][i].setState(Cell.State.NOT_EXIST);
             }
             isCorrect = false;
         }
@@ -210,8 +210,8 @@ public class NumbleModelHardModeImpl implements NumbleModel {
         List<Character> lastRightCharsGuessed = new LinkedList<>();
         if (numberOfGuessMade - 1 >= 0) {
             for (Cell cell : cells[numberOfGuessMade - 1]) {
-                if (cell.state == Cell.State.CORRECT || cell.state == Cell.State.WRONG_POSITION) {
-                    lastRightCharsGuessed.add(cell.guessChar);
+                if (cell.getState() == Cell.State.CORRECT || cell.getState() == Cell.State.WRONG_POSITION) {
+                    lastRightCharsGuessed.add(cell.getGuessChar());
                 }
             }
         }
