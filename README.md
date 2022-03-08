@@ -33,11 +33,11 @@ Enum:
 Array [ 4 ]
 }
 
-Where the 4 possible states of a cell are either INIT (initialised) CORRECT (the provided guessed character in this cell matches the solution)
+The 4 possible states of a cell are either INIT (initialised) CORRECT (the provided guessed character in this cell matches the solution)
 WRONG_POSITION (the guessed character is in the final solution, but in a different row, and NOT_EXIST, where the guessed character is not
 found in the final solution.
 
-3: If playing on mode=EASY, the get method '/game/{id}/rhs' will return the target value (an integer) of current game.
+3: If playing on mode=EASY, the get method '/game/{id}/rhs' will return the target value (an integer) of the current game.
 
 
 4: To make a guess, the post method '/game/{id}/guess' is used. 'guess' is a string that must match in length the number of columns declared at
