@@ -16,10 +16,20 @@ const app = Vue.createApp({
         async startGame() {
             gameMode = document.querySelector('#gameDifficultySelect').value;
             console.log(gameMode);
-            if (gameMode == "Hard"){
-                this.hardMode = true;
+            let gameReqBody = null
+            if(gameMode == "Easy"){
+                gameReqBody = {
+                    rows: 0,
+                    cols: 0,
+                    mode: gameMode.toUpperCase()
+                }
             } else {
-                this.hardMode = false;
+                gameReqBody = {
+                    rows: 6,
+                    cols: 6,
+                    mode: gameMode.toUpperCase()
+                };
+                this.hardMode = true;
             }
             //this.gameStarted = true;
             await fetch('http://127.0.0.1:8080/game', method = {
@@ -27,7 +37,7 @@ const app = Vue.createApp({
                 headers: {
                     'Content-Type' : 'application/json'
                 },
-                body: JSON.stringify(gameMode.toUpperCase())
+                body: JSON.stringify(gameReqBody)
             })
         .then(response => response.json())
         .then(data => {
@@ -36,7 +46,10 @@ const app = Vue.createApp({
             this.gameStarted = true;
             this.gameId = data;
         })
-        .catch(err => {console.error("Error! " + err);});
+        .catch(err => {
+            console.error("Error! " + err);
+            alert("Can not connect to the server!");
+        });
             fetch(`http://127.0.0.1:8080/game/${this.gameId}/rhs`, method = {
                 method: "GET",
                 headers: {
@@ -151,7 +164,7 @@ const app = Vue.createApp({
                        
                     }
                     guessReqBody = {
-                        equation : equationString
+                        expression : equationString
                     }
                     console.log(equationString);
                     console.log(answer);
