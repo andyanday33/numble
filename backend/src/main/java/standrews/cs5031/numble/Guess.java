@@ -1,10 +1,19 @@
 package standrews.cs5031.numble;
 
-public class Guess {
+import java.io.Serializable;
 
-    private String equation;
+public class Guess implements Serializable {
+    private String expression;
 
-    public String getEquation() {
-        return equation;
+    public Guess() {
+
+    }
+
+    public Guess(String expression) {
+        this.expression = expression;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

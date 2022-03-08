@@ -5,21 +5,23 @@ import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
- * Model implementation for the simple Numble game.
+ * Model implementation for the hard Numble game.
  */
-public class NumbleModelEasyModeImpl implements NumbleModel {
+public class NumbleModelHardModeImpl implements NumbleModel {
+
     private final int numCols;
     private final int numRows;
 
     /**
-     * The number at the right-hand side of the desired equation.
+     * The desired equation.
      */
-    private final int rhs;
-    /**
-     * The left-hand side of the desired equation.
-     */
-    private final String lhs;
+    private final String equation;
 
     private int numberOfGuessMade;
     private Cell[][] cells;
@@ -27,9 +29,11 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     private boolean won = false;
     private boolean lost = false;
 
-    public NumbleModelEasyModeImpl(int numRows, int numCols) {
+
+    public NumbleModelHardModeImpl(int numRows, int numCols) {
         this.numCols = numCols;
         this.numRows = numRows;
+
         numberOfGuessMade = 0;
         cells = new Cell[numRows][numCols];
         for (int row = 0; row < numRows; row++) {
@@ -37,24 +41,37 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
                 cells[row][col] = new Cell(row, col);
             }
         }
-        //Get a random equation from data source.
-        String equation = EquationData.getRandomEquation(Mode.EASY, numCols);
-        //Initialise rhs and lhs based on the equation
-        int equalMarkIndex = equation.indexOf('=');
-        lhs = equation.substring(0, equalMarkIndex);
-        rhs = Integer.parseInt(equation.substring(equalMarkIndex + 1));
-    }
 
+        //Get a random equation from data source.
+        this.equation = EquationData.getRandomEquation(Mode.HARD, numCols);
+    }
     /**
-     * Evaluates the guess expression to an integer. Splits the expression into number-operator pairs and handles each
-     * computation from left to right.
-     * @param guess String from the user
+     * Evaluates one side of the guess expression to an integer. Splits the expression into number-operator pairs and handles each
+     * computation from left to right. Same functionality as evaluate for the EasyMode implementation, but now expressions inside of brackets
+     * are evaluated first, then the remaining expression is solved in a left to right fashion.
+     * @param expression String from the user
      * @return int.
      * @throws IllegalArgumentException
      */
-    public int evaluate(String guess) throws IllegalArgumentException {
+    public int evaluate(String expression) throws IllegalArgumentException {
+
+        if(expression.contains("(")) {
+            if (expression.contains(")")) {
+                //Match the outermost parentheses
+                Matcher m = Pattern.compile("\\((\\(*(?:[^)(]*|\\([^)]*\\))*\\)*)\\)").matcher(expression);
+                while (m.find()) {
+                    String sub = m.group(1);    //Matches the inside of the outermost parentheses
+                    String subBrackets= "("+sub+")";
+                    int sube = evaluate(sub);   //Recursively call this function on the inside of the outermost parentheses
+                    String suber = String.valueOf(sube);
+                    expression = expression.replace(subBrackets, suber); //Replace the inside of the parentheses (with brackets) with the evaluated version
+                }
+            }
+
+        }
+
         //Splits guess string into each operator and the number its operating on. (as we are evaluating left to right)
-        String[] guessParts = guess.split("((?=\\*))|((?=\\/))|((?=\\+))|((?=\\-))");
+        String[] guessParts = expression.split("((?=\\*))|((?=\\/))|((?=\\+))|((?=\\-))");
 
         int total = 0;
         for (int i = 0; i < guessParts.length; i++) {
@@ -77,14 +94,13 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
                 }
 
             }
-
         }
         return total;
     }
 
+
     @Override
     public boolean guess(String guess) {
-
         if (hasLost() || hasWon()) {
             throw new MethodNotAvailableException("Game is over, no more guess can be made");
         }
@@ -146,17 +162,60 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     private boolean isValidGuess(String guess) {
         //Check guess is of the correct length
-        if(guess.length() != lhs.length()){
+        if(guess.length() != equation.length()){
             return false;
         }
-        //Check guess has no invalid symbols
+        if (!containsAllRightChars(guess)) {
+            return false;
+        }
+        //Check guess has no invalid symbols and lhs really equals to rhs
         try {
-            evaluate(guess);
+            int equationMarkIndex = guess.indexOf('=');
+            if (equationMarkIndex < 0) {
+                return false;
+            }
+            String lhs = guess.substring(0, equationMarkIndex);
+            String rhs = guess.substring(equationMarkIndex + 1);
+            return evaluate(lhs) == evaluate(rhs);
         } catch (IllegalArgumentException e) {
             return false;
         }
-        return true;
     }
+
+    /**
+     * This checks if guess reused all characters which are the “right character, right place” and “right
+     * character, wrong place”.
+     * @param guess the String equation player guessed
+     * @return true if all right characters in last guess is in current guess expression, false otherwise.
+     */
+    private boolean containsAllRightChars(String guess) {
+        List<Character> lastRightCharsGuessed = getLastRightCharsGuessed();
+        for (int i = 0; i < guess.length(); i++) {
+            if (lastRightCharsGuessed.size() == 0) {
+                break;
+            }
+            char guessChar = guess.charAt(i);
+            lastRightCharsGuessed.remove(Character.valueOf(guessChar));
+        }
+        return lastRightCharsGuessed.size() <= 0;
+    }
+
+    /**
+     * This extracts all characters in previous row which are marked as "CORRECT" or "WRONG_POSITION".
+     * @return a list of characters rightly guessed in previous row.
+     */
+    private List<Character> getLastRightCharsGuessed() {
+        List<Character> lastRightCharsGuessed = new LinkedList<>();
+        if (numberOfGuessMade - 1 >= 0) {
+            for (Cell cell : cells[numberOfGuessMade - 1]) {
+                if (cell.state == Cell.State.CORRECT || cell.state == Cell.State.WRONG_POSITION) {
+                    lastRightCharsGuessed.add(cell.guessChar);
+                }
+            }
+        }
+        return lastRightCharsGuessed;
+    }
+
 
     @Override
     public boolean hasLost() {
@@ -170,13 +229,13 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public boolean isCorrect(char guessChar, int position) {
-        return guessChar == lhs.charAt(position);
+        return guessChar == equation.charAt(position);
     }
 
     @Override
     public boolean exist(char guessChar, boolean[] comparedWithGuess) {
-        for (int i = 0; i < lhs.length(); i++) {
-            if (!comparedWithGuess[i] && guessChar == lhs.charAt(i)) {
+        for (int i = 0; i < equation.length(); i++) {
+            if (!comparedWithGuess[i] && guessChar == equation.charAt(i)) {
                 comparedWithGuess[i] = true;
                 return true;
             }
@@ -206,11 +265,6 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public Mode getMode() {
-        return Mode.EASY;
+        return Mode.HARD;
     }
-
-    public int getRhs() {
-        return rhs;
-    }
-
 }
