@@ -1,8 +1,11 @@
 package standrews.cs5031.numble;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * A simple class for cell
  */
+@Schema(name = "Cell", description = "Cell for each guess character with different state")
 public class Cell {
     /**
      * Possible states that a cell can have.

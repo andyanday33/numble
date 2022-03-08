@@ -20,7 +20,7 @@ public class NumbleModelHardModeImplTests {
 
     @BeforeAll
     public static void allSetup() {
-        MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
+        equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 6))
                 .thenReturn("3*4=12");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 12))
