@@ -46,9 +46,10 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     }
 
     /**
-     * Checks if the current guess is mathematically equivalent to the rhs.
+     * Evaluates the guess expression to an integer. Splits the expression into number-operator pairs and handles each
+     * computation from left to right.
      * @param guess String from the user
-     * @return boolean, True if the guess is equivalent to the rhs.
+     * @return int.
      * @throws IllegalArgumentException
      */
     public int evaluate(String guess) throws IllegalArgumentException {
