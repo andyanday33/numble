@@ -35,7 +35,12 @@ public class NumbleAPI {
             if (numCols == 0) {
                 numCols = Config.EASY_MODE_NUM_OF_COLS;
             }
-            model = new NumbleModelEasyModeImpl(numRows, numCols);
+            try {
+                model = new NumbleModelEasyModeImpl(numRows, numCols);
+            } catch (IllegalArgumentException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            }
+
         } else if(gameCreation.getMode() == NumbleModel.Mode.HARD) {
             if (numRows == 0) {
                 numRows = Config.HARD_MODE_NUM_OF_ROWS;
@@ -43,7 +48,11 @@ public class NumbleAPI {
             if (numCols == 0) {
                 numCols = Config.HARD_MODE_NUM_OF_COLS;
             }
-            model = new NumbleModelHardModeImpl(numRows, numCols);
+            try {
+                model = new NumbleModelHardModeImpl(numRows, numCols);
+            } catch (IllegalArgumentException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            }
         } else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game mode doesnt exist");
         }
