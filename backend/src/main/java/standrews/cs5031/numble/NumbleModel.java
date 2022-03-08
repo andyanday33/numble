@@ -11,10 +11,11 @@ public interface NumbleModel {
      * The first time this is called, the game starts and
      * a right solution is formed.
      * After each guess, the winning condition is checked.
+     *
      * @param guess
-     * @throws IllegalArgumentException if the guess is not a valid equation
-     * @throws MethodNotAvailableException if the game is over - player wins or loses.
      * @return true if this is right guess and the player wins, false otherwise
+     * @throws IllegalArgumentException    if the guess is not a valid equation
+     * @throws MethodNotAvailableException if the game is over - player wins or loses.
      */
     boolean guess(String guess);
 
@@ -32,6 +33,7 @@ public interface NumbleModel {
 
     /**
      * Checks if a character is in right place
+     *
      * @param guessChar
      * @param position
      * @return
@@ -42,11 +44,12 @@ public interface NumbleModel {
      * Checks if a character exists in the given equation.
      * If two same characters in wrong position, while it only has one in solution,
      * then the last one will be marked as not exists.
+     *
      * @param guessChar
      * @param comparedWithGuess marks if the character in lhs has been compared with the same character in guess.
      * @return
      */
-    boolean exist(char guessChar, boolean[] comparedWithGuess);
+    boolean checkExists(char guessChar, boolean[] comparedWithGuess);
 
     /**
      * Gets the number of columns on the board.

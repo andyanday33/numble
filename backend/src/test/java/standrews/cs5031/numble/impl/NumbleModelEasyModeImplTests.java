@@ -20,7 +20,7 @@ public class NumbleModelEasyModeImplTests {
 
     @BeforeAll
     public static void allSetup() {
-        MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
+        equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 3))
                 .thenReturn("3+2=5");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 7))
@@ -36,10 +36,10 @@ public class NumbleModelEasyModeImplTests {
     }
 
     @AfterAll
-    public static void close(){
+    public static void close() {
         try {
             equationData.close();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
         }
     }
 
@@ -68,7 +68,7 @@ public class NumbleModelEasyModeImplTests {
     }
 
     @Test
-    public void noGuessAfterPlayerLoses(){
+    public void noGuessAfterPlayerLoses() {
         model = new NumbleModelEasyModeImpl(2, 3);
         //Lose the game
         String wrongSolution = "4+1";
@@ -79,30 +79,32 @@ public class NumbleModelEasyModeImplTests {
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
     }
+
     /**
-    Check that guesses that do not have the specified length (number of cols) throw an error
+     * Check that guesses that do not have the specified length (number of cols) throw an error
      */
     @Test
     public void guessWithInvalidLength() {
         String[] invalidInputs = {"", "1", "+", "1234", "1+2+3"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
+
     /**
-    Check that guesses that include nonsensical syntax throw an error
+     * Check that guesses that include nonsensical syntax throw an error
      */
     @Test
     public void guessWithInvalidChars() {
         String[] invalidInputs = {"1++", "+1-", "1A2", "1/2", "--5"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
 
 
     /**
-    Check that guesses that add up to the incorrect target value throw an error
+     Check that guesses that add up to the incorrect target value throw an error
      */
     /*@Test
     public void guessWithInvalidValue() {
@@ -113,12 +115,12 @@ public class NumbleModelEasyModeImplTests {
     }*/
 
     /**
-    Tests case of guesses that represent a decimal value (that would normally be rounded down and treated as an integer) instead throw an error
+     * Tests case of guesses that represent a decimal value (that would normally be rounded down and treated as an integer) instead throw an error
      */
     @Test
     public void guessWithDecimal() {
         String[] invalidInputs = {"11/2", "22/4"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
@@ -129,7 +131,7 @@ public class NumbleModelEasyModeImplTests {
     @Test
     public void guessReturnsFalse() {
         String[] invalidInputs = {"1+4", "4+1", "2+3"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertFalse(model.guess(input));
         }
     }
@@ -146,7 +148,6 @@ public class NumbleModelEasyModeImplTests {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }*/
-
     @Test
     public void storeCharsInCellAfterWrongGuess() {
         String wrongGuess = "1*5";
@@ -172,7 +173,7 @@ public class NumbleModelEasyModeImplTests {
         String wrongGuess = "1*5";
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
-        for (Cell cell: model.getCells()[0]) {
+        for (Cell cell : model.getCells()[0]) {
             assertEquals(Cell.State.NOT_EXIST, cell.state);
         }
     }
@@ -192,7 +193,7 @@ public class NumbleModelEasyModeImplTests {
         String rightGuess = "3+2";
         assertTrue(model.guess(rightGuess));
         assertEquals(1, model.getNumberOfGuessMade());
-        for (Cell cell: model.getCells()[0]) {
+        for (Cell cell : model.getCells()[0]) {
             assertEquals(Cell.State.CORRECT, cell.state);
         }
     }

@@ -17,6 +17,7 @@ public class EquationData {
 
     private static final String[] HARD_MODE_LENGTH_FIVE = {"1+2=3", "2*4=8", "9-5=4", "6*0=0", "3*3=9"};
     private static final String[] HARD_MODE_LENGTH_SIX = {"3*4=12", "31*0=0", "7*5=35", "10-7=3", "8+7=15"};
+    private static final String[] HARD_MODE_LENGTH_SEVEN = {"3*4/2=6", "3+3=9-3", "7*5+2=37", "2*2=8/2"};
 
     private static final Map<Integer, String[]> EASY_MODE_EQUATIONS = new HashMap<>();
     private static final Map<Integer, String[]> HARD_MODE_EQUATIONS = new HashMap<>();
@@ -29,11 +30,13 @@ public class EquationData {
 
         HARD_MODE_EQUATIONS.put(5, HARD_MODE_LENGTH_FIVE);
         HARD_MODE_EQUATIONS.put(6, HARD_MODE_LENGTH_SIX);
+        HARD_MODE_EQUATIONS.put(7,HARD_MODE_LENGTH_SEVEN);
     }
 
     /**
      * Get a random equation from static stored equations from this class.
-     * @param mode game mode: easy or hard
+     *
+     * @param mode   game mode: easy or hard
      * @param length the length of input users will guess. For easy mode, the length refers to
      *               the left-hand side of an equation, while it refers to the whole length for hard mode.
      * @return an equation represented by a String.
@@ -43,7 +46,7 @@ public class EquationData {
         String[] equations = null;
         if (mode == NumbleModel.Mode.EASY) {
             equations = EASY_MODE_EQUATIONS.get(length);
-        } else if (mode == NumbleModel.Mode.HARD){
+        } else if (mode == NumbleModel.Mode.HARD) {
             //hard mode
             equations = HARD_MODE_EQUATIONS.get(length);
         }

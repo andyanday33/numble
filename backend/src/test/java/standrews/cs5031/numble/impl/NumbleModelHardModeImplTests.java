@@ -1,7 +1,5 @@
 package standrews.cs5031.numble.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +11,8 @@ import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class NumbleModelHardModeImplTests {
 
     NumbleModelHardModeImpl model;
@@ -20,13 +20,15 @@ public class NumbleModelHardModeImplTests {
 
     @BeforeAll
     public static void allSetup() {
-        MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
+        equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 6))
                 .thenReturn("3*4=12");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 12))
                 .thenReturn("4321+11=4332");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 7))
                 .thenReturn("2+5+2=9");
+        equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.HARD, 9))
+                .thenReturn("(15)=10+5");
 
     }
 
@@ -36,10 +38,10 @@ public class NumbleModelHardModeImplTests {
     }
 
     @AfterAll
-    public static void close(){
+    public static void close() {
         try {
             equationData.close();
-        } catch(NullPointerException e) {
+        } catch (NullPointerException e) {
         }
     }
 
@@ -67,7 +69,7 @@ public class NumbleModelHardModeImplTests {
     }
 
     @Test
-    public void noGuessAfterPlayerLoses(){
+    public void noGuessAfterPlayerLoses() {
         model = new NumbleModelHardModeImpl(2, 6);
         //Lose the game
         String wrongSolution = "5*6=30";
@@ -78,20 +80,21 @@ public class NumbleModelHardModeImplTests {
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
     }
+
     /**
-     Check that guesses that do not have the specified length (number of cols) throw an error
+     * Check that guesses that do not have the specified length (number of cols) throw an error
      */
     @Test
     public void guessWithInvalidLength() {
         String[] invalidInputs = {"", "1", "+", "1234", "1+2+3", "1+2+3=6", "4*6+1=25"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
         assertEquals(0, model.getNumberOfGuessMade());
     }
 
     /**
-     Check that guesses that do not reuse right characters throw an error
+     * Check that guesses that do not reuse right characters throw an error
      */
     @Test
     public void guessNotReuseRightChars() {
@@ -101,19 +104,19 @@ public class NumbleModelHardModeImplTests {
 
         //invalid inputs without all of (3, *, =, 1) four characters.
         String[] invalidInputs = {"2+9-20", "-8+8=0", "10-2=8", "2*7=14"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
         assertEquals(1, model.getNumberOfGuessMade());
     }
 
     /**
-     Check that guesses that include nonsensical syntax throw an error
+     * Check that guesses that include nonsensical syntax throw an error
      */
     @Test
     public void guessWithInvalidChars() {
         String[] invalidInputs = {"1++1-*", "1+2+32", "1A3=14", "13/2=6", "+--5=5"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
         assertEquals(0, model.getNumberOfGuessMade());
@@ -121,24 +124,24 @@ public class NumbleModelHardModeImplTests {
 
 
     /**
-     Check that guesses that add up to the incorrect target value throw an error
+     * Check that guesses that add up to the incorrect target value throw an error
      */
     @Test
     public void guessWithInvalidValue() {
         String[] invalidInputs = {"2+8=12", "9*1=19", "14-2=8", "123=12"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
         assertEquals(0, model.getNumberOfGuessMade());
     }
 
     /**
-     Tests case of guesses that represent a decimal value (that would normally be rounded down and treated as an integer) instead throw an error
+     * Tests case of guesses that represent a decimal value (that would normally be rounded down and treated as an integer) instead throw an error
      */
     @Test
     public void guessWithDecimal() {
         String[] invalidInputs = {"11/2=5", "22/4=5"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
         }
     }
@@ -149,7 +152,7 @@ public class NumbleModelHardModeImplTests {
     @Test
     public void guessReturnsFalse() {
         String[] invalidInputs = {"3*5=15", "3*6=18", "3*7=21"};
-        for (String input: invalidInputs) {
+        for (String input : invalidInputs) {
             assertFalse(model.guess(input));
         }
     }
@@ -183,9 +186,21 @@ public class NumbleModelHardModeImplTests {
     public void checkEvaluatedLeftToRight() {
         model = new NumbleModelHardModeImpl(2, 7);
         //Strings that would equal the target 9 according to bodmas, but not according to left to right evaluation.
-        String[] invalidInputs = {"6+9/3=9", "1+2*4=9", "2+1*7=9"};
-        for (String input: invalidInputs) {
+        String[] invalidInputs = {"6+9/3=9", "1+2*4=9"};
+        for (String input : invalidInputs) {
             assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
+    /**
+     * Ensures that expressions that have operators on both sides of the equal sign are treated as valid.
+     */
+    @Test
+    public void checkOperandsOnBothSides() {
+        model = new NumbleModelHardModeImpl(3, 9);
+
+        String[] invalidInputs = {"2*3=(8-2)","(16)=10+6","10+5=(15)"};
+        for (String input : invalidInputs) {
+            assertFalse(model.guess(input));
         }
     }
 
@@ -227,7 +242,7 @@ public class NumbleModelHardModeImplTests {
         String rightGuess = "3*4=12";
         assertTrue(model.guess(rightGuess));
         assertEquals(1, model.getNumberOfGuessMade());
-        for (Cell cell: model.getCells()[0]) {
+        for (Cell cell : model.getCells()[0]) {
             assertEquals(Cell.State.CORRECT, cell.state);
         }
     }
