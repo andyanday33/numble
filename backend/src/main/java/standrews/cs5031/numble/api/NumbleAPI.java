@@ -9,6 +9,7 @@ import standrews.cs5031.numble.MethodNotAvailableException;
 import standrews.cs5031.numble.NumbleModel;
 import standrews.cs5031.numble.data.Config;
 import standrews.cs5031.numble.impl.NumbleModelEasyModeImpl;
+import standrews.cs5031.numble.impl.NumbleModelHardModeImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +26,33 @@ public class NumbleAPI {
     @PostMapping("/game")
     public Integer startGame(@RequestBody GameCreation gameCreation) {
         NumbleModel model = null;
+        int numRows = gameCreation.getNumRows();
+        int numCols = gameCreation.getNumCols();
         if (gameCreation.getMode() == NumbleModel.Mode.EASY) {
-            int numRows = gameCreation.getNumRows() > 0 ? gameCreation.getNumRows() : Config.EASY_MODE_NUM_OF_ROWS;
-            int numCols = gameCreation.getNumCols() > 0 ? gameCreation.getNumCols() : Config.EASY_MODE_NUM_OF_COLS;
-            model = new NumbleModelEasyModeImpl(numRows, numCols);
+            if (numRows == 0) {
+                numRows = Config.EASY_MODE_NUM_OF_ROWS;
+            }
+            if (numCols == 0) {
+                numCols = Config.EASY_MODE_NUM_OF_COLS;
+            }
+            try {
+                model = new NumbleModelEasyModeImpl(numRows, numCols);
+            } catch (IllegalArgumentException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            }
+
         } else if(gameCreation.getMode() == NumbleModel.Mode.HARD) {
-            //TODO create a hard mode game instance
+            if (numRows == 0) {
+                numRows = Config.HARD_MODE_NUM_OF_ROWS;
+            }
+            if (numCols == 0) {
+                numCols = Config.HARD_MODE_NUM_OF_COLS;
+            }
+            try {
+                model = new NumbleModelHardModeImpl(numRows, numCols);
+            } catch (IllegalArgumentException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            }
         } else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game mode doesnt exist");
         }

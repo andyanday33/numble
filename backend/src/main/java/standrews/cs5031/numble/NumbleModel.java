@@ -2,7 +2,6 @@ package standrews.cs5031.numble;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 
-import javax.script.ScriptException;
 
 public interface NumbleModel {
 
