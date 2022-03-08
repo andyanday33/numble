@@ -46,9 +46,10 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     }
 
     /**
-     * Checks if the current guess is mathematically equivalent to the rhs.
+     * Evaluates the guess expression to an integer. Splits the expression into number-operator pairs and handles each
+     * computation from left to right.
      * @param guess String from the user
-     * @return boolean, True if the guess is equivalent to the rhs.
+     * @return int.
      * @throws IllegalArgumentException
      */
     public int evaluate(String guess) throws IllegalArgumentException {
@@ -83,6 +84,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public boolean guess(String guess) {
+
         if (hasLost() || hasWon()) {
             throw new MethodNotAvailableException("Game is over, no more guess can be made");
         }
@@ -130,7 +132,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
                 continue;
             }
             char guessChar = guess.charAt(i);
-            if (exist(guessChar, comparedWithGuess)) {
+            if (checkExists(guessChar, comparedWithGuess)) {
                 //Guess character in wrong place
                 cells[numberOfGuessMade][i].state = Cell.State.WRONG_POSITION;
             } else {
@@ -172,7 +174,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
     }
 
     @Override
-    public boolean exist(char guessChar, boolean[] comparedWithGuess) {
+    public boolean checkExists(char guessChar, boolean[] comparedWithGuess) {
         for (int i = 0; i < lhs.length(); i++) {
             if (!comparedWithGuess[i] && guessChar == lhs.charAt(i)) {
                 comparedWithGuess[i] = true;

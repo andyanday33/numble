@@ -33,7 +33,8 @@ public class EquationData {
 
     /**
      * Get a random equation from static stored equations from this class.
-     * @param mode game mode: easy or hard
+     *
+     * @param mode   game mode: easy or hard
      * @param length the length of input users will guess. For easy mode, the length refers to
      *               the left-hand side of an equation, while it refers to the whole length for hard mode.
      * @return an equation represented by a String.
@@ -43,7 +44,7 @@ public class EquationData {
         String[] equations = null;
         if (mode == NumbleModel.Mode.EASY) {
             equations = EASY_MODE_EQUATIONS.get(length);
-        } else if (mode == NumbleModel.Mode.HARD){
+        } else if (mode == NumbleModel.Mode.HARD) {
             //hard mode
             equations = HARD_MODE_EQUATIONS.get(length);
         }

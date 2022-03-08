@@ -2,6 +2,7 @@ package standrews.cs5031.numble;
 
 /**
  * Thrown to indicate that a method should not be called.
+ *
  * @author 200011181
  */
 public class MethodNotAvailableException extends RuntimeException {
@@ -26,8 +27,8 @@ public class MethodNotAvailableException extends RuntimeException {
      * Constructs a new exception with the specified detail message and
      * cause.
      *
-     * @param  message the detail message (can be null)
-     * @param  cause the cause (can be null)
+     * @param message the detail message (can be null)
+     * @param cause   the cause (can be null)
      */
     public MethodNotAvailableException(String message, Throwable cause) {
         super(message, cause);
