@@ -3,8 +3,8 @@ The API is comprised of 4 methods. Their functions and repsonse bodies are outli
 
 1: To initalise the game, the '/game' POST method is used. The request body follows the following schema for game creation.
 {
-  "numRows": integer (EASY mode: default = 6, HARD mode: default=8)
-  "numCols": integer (Easy mode: default = 7, HARD mode: default=10)
+  "numRows": integer (EASY mode: default = 5, HARD mode: default=8)
+  "numCols": integer (Easy mode: default = 5, HARD mode: default=10)
   "mode": string  (EASY or HARD)
 }
 The server will respond with the game id as the response body.
