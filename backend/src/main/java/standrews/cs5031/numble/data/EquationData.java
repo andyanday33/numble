@@ -1,6 +1,6 @@
 package standrews.cs5031.numble.data;
 
-import standrews.cs5031.numble.NumbleModel;
+import standrews.cs5031.numble.model.NumbleModel;
 
 import java.util.HashMap;
 import java.util.Map;
