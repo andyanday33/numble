@@ -6,9 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import standrews.cs5031.numble.Cell;
-import standrews.cs5031.numble.MethodNotAvailableException;
-import standrews.cs5031.numble.NumbleModel;
+import standrews.cs5031.numble.model.Cell;
+import standrews.cs5031.numble.exception.MethodNotAvailableException;
+import standrews.cs5031.numble.model.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +52,7 @@ public class NumbleModelHardModeImplTests {
         assertEquals(6, model.getNumCols());
         for (int i = 0; i < model.getNumRows(); i++) {
             for (int j = 0; j < model.getNumCols(); j++) {
-                assertEquals(Cell.State.INIT, model.getCells()[i][j].state);
+                assertEquals(Cell.State.INIT, model.getCells()[i][j].getState());
             }
         }
     }
@@ -62,7 +62,7 @@ public class NumbleModelHardModeImplTests {
         //Win the game
         String correctSolution = "3*4=12";
         assertTrue(model.guess(correctSolution));
-        assertTrue(model.hasWon());
+        assertTrue(model.isWon());
 
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
@@ -75,7 +75,7 @@ public class NumbleModelHardModeImplTests {
         String wrongSolution = "5*6=30";
         assertFalse(model.guess(wrongSolution));
         assertFalse(model.guess(wrongSolution));
-        assertTrue(model.hasLost());
+        assertTrue(model.isLost());
 
         //Try another guess
         assertThrows(MethodNotAvailableException.class, () -> model.guess("1+2"));
@@ -210,7 +210,7 @@ public class NumbleModelHardModeImplTests {
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         for (int i = 0; i < model.getNumCols(); i++) {
-            assertEquals(wrongGuess.charAt(i), model.getCells()[0][i].guessChar);
+            assertEquals(wrongGuess.charAt(i), model.getCells()[0][i].getGuessChar());
         }
     }
 
@@ -220,7 +220,7 @@ public class NumbleModelHardModeImplTests {
         assertTrue(model.guess(rightGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         for (int i = 0; i < model.getNumCols(); i++) {
-            assertEquals(rightGuess.charAt(i), model.getCells()[0][i].guessChar);
+            assertEquals(rightGuess.charAt(i), model.getCells()[0][i].getGuessChar());
         }
     }
 
@@ -229,12 +229,12 @@ public class NumbleModelHardModeImplTests {
         String wrongGuess = "5*3=15";
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][0].state);
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][1].state);
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][2].state);
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].state);
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].state);
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][5].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][0].getState());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][1].getState());
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][2].getState());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].getState());
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].getState());
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][5].getState());
     }
 
     @Test
@@ -243,7 +243,7 @@ public class NumbleModelHardModeImplTests {
         assertTrue(model.guess(rightGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         for (Cell cell : model.getCells()[0]) {
-            assertEquals(Cell.State.CORRECT, cell.state);
+            assertEquals(Cell.State.CORRECT, cell.getState());
         }
     }
 
@@ -255,29 +255,29 @@ public class NumbleModelHardModeImplTests {
         assertFalse(model.guess(wrongGuess));
         assertEquals(1, model.getNumberOfGuessMade());
         //Cell for the first 1
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][0].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][0].getState());
         //Cell for the second 1
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][1].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][1].getState());
         //Cell for the third 1
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][2].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][2].getState());
         //Cell for the fourth 1
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][3].getState());
         //Cell for +
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][4].getState());
         //Cell for the first 2
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][5].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][5].getState());
         //Cell for the second 2
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][6].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][6].getState());
         //Cell for =
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][7].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][7].getState());
         //Cell for the fifth 1
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][8].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][8].getState());
         //Cell for the sixth 1
-        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][9].state);
+        assertEquals(Cell.State.NOT_EXIST, model.getCells()[0][9].getState());
         //Cell for the first 3
-        assertEquals(Cell.State.CORRECT, model.getCells()[0][10].state);
+        assertEquals(Cell.State.CORRECT, model.getCells()[0][10].getState());
         //Cell for the second 3
-        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][11].state);
+        assertEquals(Cell.State.WRONG_POSITION, model.getCells()[0][11].getState());
     }
 
     @Test
@@ -287,8 +287,8 @@ public class NumbleModelHardModeImplTests {
         assertFalse(model.guess(wrongSolution));
         assertFalse(model.guess(wrongSolution));
         assertEquals(2, model.getNumberOfGuessMade());
-        assertTrue(model.hasLost());
-        assertFalse(model.hasWon());
+        assertTrue(model.isLost());
+        assertFalse(model.isWon());
     }
 
     @Test
@@ -296,7 +296,7 @@ public class NumbleModelHardModeImplTests {
         String correctSolution = "3*4=12";
         assertTrue(model.guess(correctSolution));
         assertEquals(1, model.getNumberOfGuessMade());
-        assertTrue(model.hasWon());
-        assertFalse(model.hasLost());
+        assertTrue(model.isWon());
+        assertFalse(model.isLost());
     }
 }

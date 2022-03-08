@@ -1,4 +1,4 @@
-package standrews.cs5031.numble;
+package standrews.cs5031.numble.exception;
 
 /**
  * Thrown to indicate that a method should not be called.
