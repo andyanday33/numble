@@ -3,6 +3,7 @@ const app = Vue.createApp({
     //template: '<h2> I am template</h2>'
     data() {
         return {
+            gameWon: false,
             gameStarted: false,
             hardMode: false,
             usedRows: 0,
@@ -49,6 +50,17 @@ const app = Vue.createApp({
         })
         .catch(err => console.error("Error! " + err))
         },
+        async restartGame() {
+            this.gameWon = false;
+            this.gameStarted = false;
+            this.hardMode = false;
+            this.usedRows = 0;
+            this.equationAnswer = null;
+            this.gameId = null;
+            this.rightHandSide = null;
+
+            await this.startGame();
+        },
         checkGameId() {
             let cookie = document.cookie;
             if (!cookie.gameId) {
@@ -70,7 +82,7 @@ const app = Vue.createApp({
             }
         },
         checkEquation(event) {
-            //TODO: implement this logic
+            //TODO: Implement multiplication!
             if (event.key == "Enter") {
                 if (event.key == "Enter") {
                 
@@ -79,7 +91,7 @@ const app = Vue.createApp({
                     let currentNumber = null;
                     let operation = null;
                     const num = new RegExp('[0-9]');
-                    const op = new RegExp('\\+|-');
+                    const op = new RegExp('\\+|-|\\*');
                     let valid = true;
     
                     for(i = Number(event.target.dataset.index) - 4; i <= Number(event.target.dataset.index); i++){
@@ -97,37 +109,94 @@ const app = Vue.createApp({
                         } else if(op.test(element.value)) {
                             if(operation == "addition"){
                                 answer += Number(currentNumber);
-                            } else if(operation == "extraction") {
+                            } else if (operation == "extraction") {
                                 answer -= Number(currentNumber);
+                            } else if (operation == "multiplication") {
+                                answer *= Number(currentNumber);
                             } else {
                                 answer = Number(currentNumber);
                             }
-                            element.value == "+" ? operation = "addition" : operation = "extraction";
+
+                            console.log(element.value);
+                            switch (element.value) {
+                                case "+":
+                                    operation = "addition";
+                                    break;
+                                case "-":
+                                    operation = "extraction";
+                                    break;
+                                default:
+                                    operation = "multiplication";
+                                    break;
+                            }
+                            console.log(currentNumber);
+
                             currentNumber = null;
                         }
                         //Do the operation in the last index
                         if(i == Number(event.target.dataset.index)) {
-                            operation == "addition" ? answer += Number(currentNumber) : answer -= Number(currentNumber);
+                            console.log(operation);
+                            switch (operation) {
+                                case "addition":
+                                    answer += Number(currentNumber);
+                                    break;
+                                case "extraction":
+                                    answer -= Number(currentNumber);
+                                    break;
+                                default:
+                                    answer *= Number(currentNumber);
+                                    break;
+                            }
                         }
                        
                     }
-                    console.log("answer string: " + equationString);
+                    guessReqBody = {
+                        equation : equationString
+                    }
+                    console.log(equationString);
+                    console.log(answer);
+                    console.log("answer string: " + guessReqBody);
                     
                     if(answer == this.rightHandSide){
                         
                         
-                        console.log(JSON.stringify(equationString));
-                        //TODO: Implement coloring logic
+                        console.log(JSON.stringify(guessReqBody));
                         fetch(`http://127.0.0.1:8080/game/${this.gameId}/guess`, method = {
                             method: "POST",
                             headers: {
                                 'Content-Type' : 'application/json'
                             },
-                            body: JSON.stringify(equationString)
+                            body: JSON.stringify(guessReqBody)
                         })
                         .then(response => response.json())
                         .then(data => {
+
+                            if(data.won){
+                                console.log("WON");
+                                this.gameWon = true;
+                            }
+                            console.log(data.won);
+
                             console.log(data);
+                            let row = data.cells[this.usedRows];
+                            console.log(row);
+                            let j = 0;
+                            for(let i = this.usedRows * 5; i < (this.usedRows + 1) * 5; i++) {
+                                let state = row[j].state;
+                                console.log(row);
+                                console.log(state);
+                                const col = this.$refs?.[`input-${i}`];
+                                console.log(col);
+                                if (state == "NOT_EXIST") {
+                                    col.style.background = "gray";
+                                } else if (state == "WRONG_POSITION") {
+                                    col.style.background = "orange";
+                                } else {
+                                    col.style.background = "green";
+                                }
+                                j++;
+                            }
+
                             this.usedRows++;
                         })
                         .catch(err => console.error("ERROR: " + err));
