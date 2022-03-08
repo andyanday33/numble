@@ -39,6 +39,7 @@ public class NumbleAPI {
         NumbleModel model = null;
         int numRows = gameCreation.getNumRows();
         int numCols = gameCreation.getNumCols();
+        System.out.println("Rows: " + numRows + "Cols: " + numCols);
         if (gameCreation.getMode() == NumbleModel.Mode.EASY) {
             if (numRows == 0) {
                 numRows = Config.EASY_MODE_NUM_OF_ROWS;
