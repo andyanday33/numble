@@ -46,7 +46,7 @@
             <div tag="input-section" class="row top-buffer" v-if="!hardMode">
                 <div v-for="(m, index1) in 5" :key="index1" class="input-group row top-buffer justify-content-center">
                     <input v-for="(n,index2) in 5" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 5 + index2" :ref="getReferenceEasy(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
-                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0);checkEquationEasy($event)">
+                    class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); sendEquation($event)">
                     <p class="h1 col text-center">=</p>
                     <p class="h1 col text-center" v-if="rightHandSide">{{ rightHandSide }}</p>
                 </div>
@@ -54,12 +54,11 @@
 
             <!--Render if the game is in hard mode-->
             <div class="row top-buffer" v-if="hardMode">
-                <h3>Hard Mode</h3>
                 <div class="input-group row top-buffer justify-content-center">
                     <div v-for="(m, index1) in 8" :key="index1" class="input-group row top-buffer justify-content-center">
-                        <input v-for="(n,index2) in 6" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 5 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
-                        class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0);checkEquationHard($event)">
-                    
+                        <input v-for="(n,index2) in 6" :key ="index2" :disabled="usedRows != index1 || gameWon" :data-index="index1 * 6 + index2" :ref="getReferenceHard(index1, index2)" type="text" maxlength="1" pattern="[0-9]|\+|-\*" 
+                        class="form-control col border-solid border-2 text-center" @keyup="focusNextOnMax($event, 1); focusPrevOnMin($event, 0); sendEquation($event)">
+                    </div>
                 </div>
             </div>
 
