@@ -7,6 +7,8 @@ import standrews.cs5031.numble.data.EquationData;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Model implementation for the hard Numble game.
@@ -43,8 +45,31 @@ public class NumbleModelHardModeImpl implements NumbleModel {
         //Get a random equation from data source.
         this.equation = EquationData.getRandomEquation(Mode.HARD, numCols);
     }
-
+    /**
+     * Evaluates one side of the guess expression to an integer. Splits the expression into number-operator pairs and handles each
+     * computation from left to right. Same functionality as evaluate for the EasyMode implementation, but now expressions inside of brackets
+     * are evaluated first, then the remaining expression is solved in a left to right fashion.
+     * @param expression String from the user
+     * @return int.
+     * @throws IllegalArgumentException
+     */
     public int evaluate(String expression) throws IllegalArgumentException {
+
+        if(expression.contains("(")) {
+            if (expression.contains(")")) {
+                //Match the outermost parentheses
+                Matcher m = Pattern.compile("\\((\\(*(?:[^)(]*|\\([^)]*\\))*\\)*)\\)").matcher(expression);
+                while (m.find()) {
+                    String sub = m.group(1);    //Matches the inside of the outermost parentheses
+                    String subBrackets= "("+sub+")";
+                    int sube = evaluate(sub);   //Recursively call this function on the inside of the outermost parentheses
+                    String suber = String.valueOf(sube);
+                    expression = expression.replace(subBrackets, suber); //Replace the inside of the parentheses (with brackets) with the evaluated version
+                }
+            }
+
+        }
+
         //Splits guess string into each operator and the number its operating on. (as we are evaluating left to right)
         String[] guessParts = expression.split("((?=\\*))|((?=\\/))|((?=\\+))|((?=\\-))");
 

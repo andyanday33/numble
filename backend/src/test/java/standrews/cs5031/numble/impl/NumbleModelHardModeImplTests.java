@@ -153,6 +153,28 @@ public class NumbleModelHardModeImplTests {
             assertFalse(model.guess(input));
         }
     }
+    /**
+     * Check that valid equations that add up to target value, but are not the exact correct solution, return false.
+     */
+    @Test
+    public void guessWithBracketsReturnFalse() {
+        model = new NumbleModelHardModeImpl(2, 7);
+        String[] invalidInputs = {"((9))=9","(4+5)=9"};
+        for (String input: invalidInputs) {
+            assertFalse(model.guess(input));
+        }
+    }
+    /**
+     * Check guesses with unbalanced sets of parentheses are treated as invalid inputs
+     */
+    @Test
+    public void guessWithUnbalancedBrackets() {
+        model = new NumbleModelHardModeImpl(2, 7);
+        String[] invalidInputs = {"(((9)=9","(10-2=9"};
+        for (String input: invalidInputs) {
+            assertThrows(IllegalArgumentException.class, () -> model.guess(input));
+        }
+    }
 
     /**
      * Ensures that expressions are evaluated in a left to right fashion, not applying the rules of bodmas.
