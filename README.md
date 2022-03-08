@@ -43,5 +43,5 @@ found in the final solution.
 4: To make a guess, the post method '/game/{id}/guess' is used. 'guess' is a string that must match in length the number of columns declared at
 the initalisation of the game.  The method will return the updated game state.
 
-(For further clarification of the API, running 'NumbleApplication' in the src directory and going to http://localhost:8080/swagger-ui/index.html#/numble-api/
+(running 'NumbleApplication' in the src directory and going to http://localhost:8080/swagger-ui/index.html#/numble-api/
 will provide an interactive page for using the API methods.)
