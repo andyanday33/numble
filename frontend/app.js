@@ -50,12 +50,12 @@ const app = Vue.createApp({
             this.gameStarted = true;
             this.gameId = data;
 
-            await fetch(`http://127.0.0.1:8080/game/${this.gameId}`, method = {
-                method: 'GET',
-                headers: {
-                    'Content-Type' : 'application/json'
-                }
-            }).then(res => res.json()).then(data => console.log(data));
+            // await fetch(`http://127.0.0.1:8080/game/${this.gameId}`, method = {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type' : 'application/json'
+            //     }
+            // }).then(res => res.json()).then(data => console.log(data));
         })
         .catch(err => {
             console.error("Error! " + err);
@@ -100,24 +100,29 @@ const app = Vue.createApp({
             }
         },
         focusNextOnMax(event, max) {
-            if(!event.shiftKey && !event.delete && !event.right && !event.left){
+            if(!["Shift", "Backspace", "Delete", "ArrowLeft", "ArrowRight"].includes(event.key)){
                 if (event.target.value.length === max) {
                     const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
                     if (typeof nextElement !== "undefined") nextElement[0].focus();
                 }
             }
         },
-        focusPrevOnMin(event, min) {
-            if(!event.shiftKey && !event.right && !event.left   ){
-                if (event.target.value.length === min) {
-                    const prevElement = this.$refs?.[`input-${Number(event.target.dataset.index) - 1}`];
-                    if (typeof prevElement !== "undefined") prevElement[0].focus();
-                }
-            }
-        },
+        // focusPrevOnMin(event, min) {
+        //     if(!event.shiftKey && !event.right && !event.left){
+        //         if (event.target.value.length === min) {
+        //             const prevElement = this.$refs?.[`input-${Number(event.target.dataset.index) - 1}`];
+        //             if (typeof prevElement !== "undefined") prevElement[0].focus();
+        //         }
+        //     }
+        // },
         focusLeft(event) {
             const prevElement = this.$refs?.[`input-${Number(event.target.dataset.index) - 1}`];
-            if (typeof prevElement !== "undefined") prevElement[0].focus();
+            if (typeof prevElement !== "undefined") {
+                prevElement[0].focus();
+                if(event.key == "Backspace" || event.key == "Delete") {
+                    prevElement[0].value = "";
+                }
+            }
         },
         focusRight(event) {
             const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
