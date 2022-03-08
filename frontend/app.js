@@ -17,8 +17,7 @@ const app = Vue.createApp({
     methods: {
         async startGame() {
             gameMode = document.querySelector('#gameDifficultySelect').value;
-            console.log(gameMode);
-
+            
             //We can implement customized number of rows and cols here in the future
             let gameReqBody = {
                     rows: 0,
@@ -45,8 +44,7 @@ const app = Vue.createApp({
             })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            //this.checkGameId();
+
             this.gameStarted = true;
             this.gameId = data;
         })
@@ -95,7 +93,6 @@ const app = Vue.createApp({
         focusNextOnMax(event, max) {
             if (event.target.value.length === max) {
                 const nextElement = this.$refs?.[`input-${Number(event.target.dataset.index) + 1}`];
-                console.log(nextElement);
                 if (typeof nextElement !== "undefined") nextElement[0].focus();
             }
         },
@@ -119,75 +116,17 @@ const app = Vue.createApp({
     
                     for(i = this.usedRows * this.cols; i <= this.usedRows * this.cols + this.cols - 1; i++){
                         const element = this.$refs?.[`input-${i}`];
-                        console.log(element);
                         if(!element){
                             valid = false;
                         } else {
                             let inputField = element[0];
                             equationString += String(inputField.value);
-                            // //if input is a number
-                            // if(num.test(inputField.value)) {
-                            //     if (currentNumber == null){
-                            //         currentNumber =  inputField.value;
-                            //     } else {
-                            //         currentNumber += String(inputField.value);
-                            //     }
-                            // //if input is an operation such as + or -
-                            // } else if(op.test(inputField.value)) {
-                            //     if(operation == "addition"){
-                            //         answer += Number(currentNumber);
-                            //     } else if (operation == "extraction") {
-                            //         answer -= Number(currentNumber);
-                            //     } else if (operation == "multiplication") {
-                            //         answer *= Number(currentNumber);
-                            //     } else {
-                            //         answer = Number(currentNumber);
-                            //     }
-
-                            //     console.log(inputField.value);
-                            //     switch (inputField.value) {
-                            //         case "+":
-                            //             operation = "addition";
-                            //             break;
-                            //         case "-":
-                            //             operation = "extraction";
-                            //             break;
-                            //         default:
-                            //             operation = "multiplication";
-                            //             break;
-                            //     }
-                            //     console.log(currentNumber);
-
-                            //     currentNumber = null;
-                            // }
-                            // //Do the operation in the last index
-                            // if(i == this.usedRows * 5 + 4) {
-                            //     console.log(operation);
-                            //     switch (operation) {
-                            //         case "addition":
-                            //             answer += Number(currentNumber);
-                            //             break;
-                            //         case "extraction":
-                            //             answer -= Number(currentNumber);
-                            //             break;
-                            //         default:
-                            //             answer *= Number(currentNumber);
-                            //             break;
-                            //     }
-                            // }
-                        
                         }
                         guessReqBody = {
                             expression : equationString
                         }
-                        console.log(equationString);
-                        // console.log(answer);
-                        console.log("answer string: " + guessReqBody);
                     }
                     if(valid){
-                        
-                        
-                        console.log(JSON.stringify(guessReqBody));
                         fetch(`http://127.0.0.1:8080/game/${this.gameId}/guess`, method = {
                             method: "POST",
                             headers: {
@@ -199,21 +138,18 @@ const app = Vue.createApp({
                         .then(data => {
 
                             if(data.won){
-                                console.log("WON");
+
                                 this.gameWon = true;
                             }
-                            console.log(data.won);
 
-                            console.log(data);
                             let row = data.cells[this.usedRows];
-                            console.log(row);
+  
                             let j = 0;
                             for(let i = this.usedRows * this.cols; i < (this.usedRows + 1) * this.cols; i++) {
                                 let state = row[j].state;
-                                console.log(row);
-                                console.log(state);
+           
                                 const col = this.$refs?.[`input-${i}`][0];
-                                console.log(col);
+
                                 if (state == "NOT_EXIST") {
                                     col.style.background = "gray";
                                 } else if (state == "WRONG_POSITION") {
