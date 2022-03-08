@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import standrews.cs5031.numble.GameCreation;
-import standrews.cs5031.numble.Guess;
-import standrews.cs5031.numble.NumbleModel;
+import standrews.cs5031.numble.model.GameCreation;
+import standrews.cs5031.numble.model.Guess;
+import standrews.cs5031.numble.model.NumbleModel;
 import standrews.cs5031.numble.data.Config;
 
 public class NumbleAPITests {

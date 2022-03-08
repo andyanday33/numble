@@ -1,8 +1,8 @@
 package standrews.cs5031.numble.impl;
 
-import standrews.cs5031.numble.Cell;
-import standrews.cs5031.numble.MethodNotAvailableException;
-import standrews.cs5031.numble.NumbleModel;
+import standrews.cs5031.numble.model.Cell;
+import standrews.cs5031.numble.exception.MethodNotAvailableException;
+import standrews.cs5031.numble.model.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
 /**

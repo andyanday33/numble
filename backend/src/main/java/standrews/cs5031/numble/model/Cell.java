@@ -1,4 +1,4 @@
-package standrews.cs5031.numble;
+package standrews.cs5031.numble.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;

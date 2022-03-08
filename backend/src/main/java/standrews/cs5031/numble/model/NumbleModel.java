@@ -1,6 +1,7 @@
-package standrews.cs5031.numble;
+package standrews.cs5031.numble.model;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import standrews.cs5031.numble.exception.MethodNotAvailableException;
 
 
 public interface NumbleModel {

@@ -6,9 +6,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import standrews.cs5031.numble.Cell;
-import standrews.cs5031.numble.MethodNotAvailableException;
-import standrews.cs5031.numble.NumbleModel;
+import standrews.cs5031.numble.model.Cell;
+import standrews.cs5031.numble.exception.MethodNotAvailableException;
+import standrews.cs5031.numble.model.NumbleModel;
 import standrews.cs5031.numble.data.EquationData;
 
 import static org.junit.jupiter.api.Assertions.*;
