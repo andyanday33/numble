@@ -84,6 +84,7 @@ public class NumbleModelEasyModeImpl implements NumbleModel {
 
     @Override
     public boolean guess(String guess) {
+
         if (hasLost() || hasWon()) {
             throw new MethodNotAvailableException("Game is over, no more guess can be made");
         }
