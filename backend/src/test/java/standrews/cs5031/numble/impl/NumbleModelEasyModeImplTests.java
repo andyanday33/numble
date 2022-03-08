@@ -20,7 +20,7 @@ public class NumbleModelEasyModeImplTests {
 
     @BeforeAll
     public static void allSetup() {
-        MockedStatic<EquationData> equationData = Mockito.mockStatic(EquationData.class);
+        equationData = Mockito.mockStatic(EquationData.class);
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 3))
                 .thenReturn("3+2=5");
         equationData.when(() -> EquationData.getRandomEquation(NumbleModel.Mode.EASY, 7))
